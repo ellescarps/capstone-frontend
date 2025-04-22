@@ -13,7 +13,58 @@ function ProfilePage() {
     const [profile, setProfile] = useState(null);
     const [posts, setPosts] = useState([]);
     const [callouts, setCallouts] = useState([]);
+    const [collections, setCollections] = useState([]);
     const [error, setError] = useState(null);
+    const [following, setFollowing] = useState(false);
+
+
+useEffect( () => {
+    async function checkFollowStatus() {
+        try {
+            const response = await fetch(`${API_URL}/following`);
+            const following = await response.json();
+
+            const isFollowing = following.some((follow) => follow.id === parseInt(id));
+            setFollowing(isFollowing);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    checkFollowStatus();
+}, [id]);
+
+async function handleFollow() {
+    try {
+        const response = await fetch(`${API_URL}/follow/${id}`, {
+            method: "POST",
+        });
+
+        if (response.ok) {
+            setFollowing(true);
+        } else {
+            console.error("Failed to follow user")
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function handleUnfollow() {
+    try {
+        const response = await fetch(`${API_URL}/unfollow/${id}`, {
+            method: "DELETE",
+         });
+
+        if (response.ok) {
+            setFollowing(false);
+        }  else {
+            console.error("Failed to unfollow user")
+        }
+    } catch (error) {
+        console.error("Error following user", error);
+    }
+}
+
 
 
     useEffect(() => {
@@ -38,7 +89,7 @@ function ProfilePage() {
                 setCallouts(postsData.filter(post => post.type === "callout"));
     
                
-                const collectionsResponse = await fetch(`${API_URL}/api/collections`);
+                const collectionsResponse = await fetch(`${API_URL}/collections`);
                 if (!collectionsResponse.ok) {
                     throw new Error(`Failed to fetch collections, status: ${collectionsResponse.status}`);
                 }
@@ -85,7 +136,14 @@ if (!profile || !posts || !callouts || !collections) {
 
                         <div className="profile-actions">
                         <button>Music</button>
-                        <button>Follow</button>
+
+                        {isFollowing ? (
+                            <button onClick={handleUnfollow}>Unfollow</button>
+                        ) : (
+                            <button onClick={handleFollow}>Follow</button>
+                        )}
+                        
+                        
                         <button>Share</button>
                         </div>
 

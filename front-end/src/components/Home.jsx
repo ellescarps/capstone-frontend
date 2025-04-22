@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {  useState, useEffect } from "react";
 import PostCard from "./PostCard";
 import Sidebar from "./Sidebar";
@@ -9,15 +9,18 @@ import TrendingCarousel from "./TrendingCarousel";
 import { API_URL } from "../API";
 
 
-function HomePage( {searchParams}) {
+function HomePage() {
 const navigate = useNavigate();
 const [allPosts, setAllPosts] = useState([]);
 const [allCallouts, setAllCallouts] = useState([]);
 const [trending, setTrending] = useState([]);
 const [error, setError] = useState(null);
 
+const [searchParams] = useSearchParams();
+const search = searchParams.get("search")?.toLowerCase();
 
-async function fetchAllPosts(id) {
+
+async function fetchAllPosts() {
     try {
         const response = await fetch(`${API_URL}/posts`);
         const json = await response.json();
@@ -41,9 +44,18 @@ useEffect( () => {
     getPosts();
 }, [])
 
-const postsToDisplay = 
-searchParams ? allPosts.filter( (post) => post.name.toLowerCase().includes(searchParams.toLowerCase()) )
-: allPosts;
+const postsToDisplay = search 
+    ? allPosts.filter(post => 
+        post.title.toLowerCase().includes(search) ||
+        post.description.toLowerCase().includes(search)
+    ) : allPosts;
+
+const filteredCallouts = search
+    ? allCallouts.filter(post =>
+        post.title.toLowerCase().includes(search) ||
+        post.description.toLowerCase().includes(search)
+      )
+    : allCallouts;
 
 
 return (
@@ -60,7 +72,27 @@ return (
                     <h2>Posts</h2>
                     <div className="posts-grid">
                     {postsToDisplay.map(post => (
-                        <PostCard key={post.id} post={post} />
+                        <PostCard
+                        key={post.id}
+                        id={post.id}
+                        onClick={() => navigate(`/posts/${post.id}`)}
+                        title={post.title}
+                        description={post.description}
+                        image={post.images[0]?.url}
+                        category={post.category.name}
+                        location={post.location.city}
+                        isAvailable={post.isAvailable}
+                        shippingCost={post.shippingCost}
+                        shippingResponsibility={post.shippingResponsibility}
+                        shippingOption={post.shippingOption}
+                        isFeatured={post.isFeatured}
+                        trendingScore={post.trendingScore}
+                        createdAt={post.createdAt}
+                        user={post.user.username}
+                        likesCount={post.likes.length}
+                        commentsCount={post.comments.length}
+                        favoritesCount={post.favorites.length}
+                      />
                     ))}
                     </div>
                 </section>
@@ -69,8 +101,10 @@ return (
                     <section>
                         <h2>Callouts</h2>
                         <div className="callouts-grid">
-                        {allCallouts.map(callout => {
-                           return <CalloutCard key={callout.id} post={callout} />
+                        {filteredCallouts.map(callout => {
+                           return <CalloutCard 
+                           key={callout.id} 
+                           post={callout} />
                         })}
                         </div>
                     </section>
