@@ -1,12 +1,11 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {  useState, useEffect } from "react";
 import PostCard from "./PostCard";
-import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
-import Footer from "./Footer"
 import CalloutCard from './CalloutCard';
 import TrendingCarousel from "./TrendingCarousel";
 import { API_URL } from "../API";
+
+
 
 
 function HomePage() {
@@ -34,7 +33,7 @@ useEffect( () => {
     async function getPosts() {
         const allPosts = await fetchAllPosts();
         if (allPosts) {
-            setAllPosts(allPosts);
+            setAllPosts(allPosts.filter(post => post.type === "post"));
             setAllCallouts(allPosts.filter(post => post.type === 'callout'));
             setTrending(allPosts.filter(post => post.isFeatured || post.trendingScore > 10));
         } else {
@@ -61,8 +60,7 @@ const filteredCallouts = search
 return (
     <div>
       <div className="homepage-container">
-            <Navbar />
-            <Sidebar />
+            
 
         <main>
             <TrendingCarousel posts={trending}/>
@@ -85,8 +83,6 @@ return (
                         shippingCost={post.shippingCost}
                         shippingResponsibility={post.shippingResponsibility}
                         shippingOption={post.shippingOption}
-                        isFeatured={post.isFeatured}
-                        trendingScore={post.trendingScore}
                         createdAt={post.createdAt}
                         user={post.user.username}
                         likesCount={post.likes.length}
@@ -110,7 +106,7 @@ return (
                     </section>
         </main>
     
-        <Footer/>
+       
       </div>
     </div>
 );

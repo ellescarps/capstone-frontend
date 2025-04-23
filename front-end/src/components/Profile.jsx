@@ -3,10 +3,9 @@ import { useParams } from 'react-router-dom';
 import PostCard from "./PostCard";
 import CalloutCard from "./CalloutCard";
 import SideBar from "./Sidebar";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
 import CollectionCard from "./CollectionCard";
 import { API_URL } from "../API";
+
 
 function ProfilePage() {
     const {id} = useParams();
@@ -113,8 +112,6 @@ if (!profile || !posts || !callouts || !collections) {
     return (
         <div>
             <div className="profile-container">
-            <Navbar />
-            <SideBar />
             </div>
 
             <main>
@@ -180,7 +177,7 @@ if (!profile || !posts || !callouts || !collections) {
                 </div>
             </main>
 
-            <Footer />
+          
         </div>
             
     )
