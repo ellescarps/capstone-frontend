@@ -6,8 +6,6 @@ import TrendingCarousel from "./TrendingCarousel";
 import { API_URL } from "../API";
 
 
-
-
 function HomePage() {
 const navigate = useNavigate();
 const [allPosts, setAllPosts] = useState([]);
@@ -23,25 +21,34 @@ async function fetchAllPosts() {
     try {
         const response = await fetch(`${API_URL}/posts`);
         const json = await response.json();
+
+        if (!Array.isArray(json)) {
+            console.error("Expected an array but got:", json);
+            setError("Unexpected data format from API.");
+            return [];
+        }
+        
         return json;
     } catch (error) {
         console.error(error);
+        setError("Failed to fetch posts");
+        return [];
     }
 }
 
 useEffect( () => {
     async function getPosts() {
         const allPosts = await fetchAllPosts();
-        if (allPosts) {
+
+       
+        if (Array.isArray(allPosts)) {
             setAllPosts(allPosts.filter(post => post.type === "post"));
             setAllCallouts(allPosts.filter(post => post.type === 'callout'));
             setTrending(allPosts.filter(post => post.isFeatured || post.trendingScore > 10));
-        } else {
-            console.log("Failed to load posts");
         }
-    }   
+    }
     getPosts();
-}, [])
+}, []);
 
 const postsToDisplay = search 
     ? allPosts.filter(post => 
@@ -56,6 +63,7 @@ const filteredCallouts = search
       )
     : allCallouts;
 
+    if (error) { return <div>Error: {error}</div>};
 
 return (
     <div>
@@ -78,7 +86,7 @@ return (
                         description={post.description}
                         image={post.images[0]?.url}
                         category={post.category.name}
-                        location={post.location.city}
+                        
                         isAvailable={post.isAvailable}
                         shippingCost={post.shippingCost}
                         shippingResponsibility={post.shippingResponsibility}

@@ -9,7 +9,6 @@ function CalloutCard( {post} ) {
 
             <div className="callout-details">
                 <span>{post.category.name}</span>
-                <span>{post.location.city}</span>
             </div>
         </div>
     );

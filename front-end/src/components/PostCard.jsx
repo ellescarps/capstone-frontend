@@ -7,7 +7,8 @@ function PostCard({
         image,
         category,
         user,
-        location,
+        latitude,
+        longitude,
         isAvailable,
         shippingCost,
         shippingResponsibility,
@@ -34,7 +35,9 @@ return (
 
         <div className="post-meta">
             <span className="category">{category}</span>
-            <span className="location">{location}</span>
+            <span className="location">
+            {latitude && longitude ? `📍 (${latitude.toFixed(3)}, ${longitude.toFixed(3)})` : "📍 Location pending"}
+            </span>
             <span className={`availability ${isAvailable ? 'available' : 'unavailable'}`}>
                 {isAvailable ? "Available" : "Unavailable"}
             </span>

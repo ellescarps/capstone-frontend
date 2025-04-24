@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import PostCard from "./PostCard";
 import CalloutCard from "./CalloutCard";
-import SideBar from "./Sidebar";
 import CollectionCard from "./CollectionCard";
 import { API_URL } from "../API";
 
@@ -44,7 +43,7 @@ async function handleFollow() {
             console.error("Failed to follow user")
         }
     } catch (error) {
-        console.error(error);
+        console.error("Error following user", error);
     }
 }
 
@@ -60,7 +59,7 @@ async function handleUnfollow() {
             console.error("Failed to unfollow user")
         }
     } catch (error) {
-        console.error("Error following user", error);
+        console.error("Error unfollowing user", error);
     }
 }
 
@@ -105,9 +104,8 @@ async function handleUnfollow() {
 
 if (error) return <div>{error}</div>
 
-if (!profile || !posts || !callouts || !collections) {
-    return <p>Loading profile...</p>;
-  }
+if (!profile) return <p>Loading profile...</p>; 
+
 
     return (
         <div>
@@ -119,7 +117,7 @@ if (!profile || !posts || !callouts || !collections) {
                     <section className="profile-header">
                         <h1>{profile.name}</h1>
                         <img src={profile.profilePicUrl} alt={`${profile.name}'s profile`} />
-                        <p>{profile.location.city}, {profile.location.country.name}</p>
+                        <p>{profile.location?.city || 'City not available'}, {profile.location?.country?.name || 'Country not available'}</p>
 
                         <div className="about-me">
                          <h2>About Me</h2>

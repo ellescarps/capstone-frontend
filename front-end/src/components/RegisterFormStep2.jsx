@@ -1,48 +1,78 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "../API";
 
-function RegisterFormStep2( { formData, setFormData, nextStep, prevStep }) {
-    const [locations, setLocations] = useState([]);
-    const [locationId, setLocationId] = useState(formData.locationId || "");
-    const [profilePicUrl, setProfilePicUrl] = useState(formData.profilePicUrl || "");
+function RegisterFormStep2({ formData, setFormData, prevStep }) {
     const [selectedFile, setSelectedFile] = useState(null);
-    const [shippingOption, setShippingOption] = useState(formData.shippingOption || "");
-    const [shippingResponsibility, setShippingResponsibility] = useState(formData.shippingResponsibility || "");
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
+    const [agreedToTerms, setAgreedToTerms] = useState(false);
+    const navigate = useNavigate();
 
     const shippingOptions = ["PICKUP", "SHIPPING", "DROPOFF"];
     const responsibilities = ["GIVER", "RECEIVER", "SHARED"];
-    
 
-    useEffect( () => {
-        async function fetchLocations() {
-            try {
-                const response = await fetch(`${API_URL}/locations`);
-                const json = await response.json();
-                setLocations(json);
-            } catch (error) {
-                console.error("Failed to fetch locations", error);
-            }
-            }
-            fetchLocations();
-    }, []);
 
-    const handleUseLocation = async (e) => {
+   
+
+    const handleUseLocation = async () => {
+        const apiKey = import.meta.env.VITE_OPENCAGE_API_KEY;
+
+        if (!navigator.geolocation) {
+            setError("Geolocation is not supported by your browser.");
+            return;
+        }
+
         navigator.geolocation.getCurrentPosition(async (position) => {
             const { latitude, longitude } = position.coords;
 
             try {
-                const response = await fetch(`${API_URL}/locations/nearby?lat=${latitude}&lng=${longitude}`);
-                const json = await response.json();
-                if (json?.id) {
-                    setLocationId(json.data);
+                const response = await fetch(
+                    `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`
+                );
+                const data = await response.json();
+                const place = data.results[0];
+
+                const detectedCity = place.components.city || place.components.town || place.components.village || "Unknown City";
+                const detectedCountry = place.components.country;
+
+                    // Block colonized or unsupported locations
+                const BLOCKED_COUNTRIES = ["Israel"];
+                const BLOCKED_CITIES = ["Tel Aviv"];
+
+                const normalizedCity = detectedCity.toLowerCase();
+                const normalizedCountry = detectedCountry.toLowerCase();
+
+                const isBlocked =
+                    BLOCKED_COUNTRIES.some((country) => country.toLowerCase() === normalizedCountry) ||
+                    BLOCKED_CITIES.some((city) => city.toLowerCase() === normalizedCity);
+
+                if (isBlocked) {
+                    setError("This location is not supported.");
+                    return;
                 }
+
+                setFormData((prev) => ({
+                    ...prev,
+                    city: detectedCity || "",
+                    country: detectedCountry || "",
+                }));
+                setError(null);
             } catch (error) {
-                setError("Could not get nearby location");
+                setError("Could not determine location");
+            }
+        }, (error) => {
+            if (error.code === error.PERMISSION_DENIED) {
+                setError("Permission to access location was denied.");
+            } else if (error.code === error.POSITION_UNAVAILABLE) {
+                setError("Location information is unavailable.");
+            } else if (error.code === error.TIMEOUT) {
+                setError("Location request timed out.");
+            } else {
+                setError("An unknown error occurred while fetching your location.");
             }
         });
-    };
+    }
 
     const uploadToCloudinary = async () => {
         const json = new FormData();
@@ -52,7 +82,7 @@ function RegisterFormStep2( { formData, setFormData, nextStep, prevStep }) {
 
         const response = await fetch("https://api.cloudinary.com/v1_1/daikzjbhw/image/upload", {
             method: "POST",
-            body: json,    
+            body: json,
         });
 
         const fileData = await response.json();
@@ -62,114 +92,150 @@ function RegisterFormStep2( { formData, setFormData, nextStep, prevStep }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if(!locationId || !shippingResponsibility) {
+    
+        if (!formData.city || !formData.country) {
             setError("Please fill out all required fields");
             return;
         }
-
-        let finalProfilePicUrl = profilePicUrl;
-
-    if (selectedFile) {
-      try {
-        finalProfilePicUrl = await uploadToCloudinary();
-      } catch (error) {
-        setError("Image upload failed.");
-        return;
-      }
-    }
-
-        setFormData({
+    
+        let finalProfilePicUrl = formData.profilePicUrl;
+    
+        if (selectedFile) {
+            try {
+                finalProfilePicUrl = await uploadToCloudinary();
+            } catch (error) {
+                setError("Image upload failed.");
+                return;
+            }
+        }
+    
+       
+        const finalData = {
             ...formData,
+            name: formData.name?.trim(),
+            email: formData.email?.trim(),
+            password: formData.password?.trim(),
             profilePicUrl: finalProfilePicUrl,
-            locationId: parseInt(locationId),
-            shippingOption,
-            shippingResponsibility,
-        });
-
-        setError(null);
-        nextStep();
+            city: formData.city?.trim() || "Unknown City",      
+            country: formData.country?.trim() || "Unknown Country", 
+            shippingResponsibility: formData.shippingResponsibility ?? "SHARED", 
+            shippingOption: formData.shippingOption ?? "PICKUP",  
+          };
+    
+        try {
+            const response = await fetch(`${API_URL}/register`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(finalData),
+            });
+    
+            const data = await response.json();
+    
+            if (!response.ok) {
+                throw new Error(data.message || "Registration failed");
+            }
+    
+            
+            alert("Registration successful! Please log in, comrade!!");
+            navigate("/login");
+            
+        } catch (err) {
+            setError(err.message || "Something went wrong. Please try again.");
+        }
     };
 
-return (
-    <form onSubmit={handleSubmit}>
-        <h1>Register: Step 2/2</h1>
+    return (
+        <form onSubmit={handleSubmit}>
+            <h1>Register: Step 2/2</h1>
 
-        <div>
-            <label htmlFor="profilePic">Profile Picture (optional):</label>
-            <input 
-            type="file" 
-            accept="image/*"
-            id="profilePic"
-            onChange={(e) => setSelectedFile(e.target.files[0])}
-            />
-            {selectedFile && (
-            <img
-             src={URL.createObjectURL(selectedFile)}
-            alt="Preview"
-            style={{ width: '200px', marginTop: '10px' }}
-            />
-)}
-        </div>
+            <div>
+                <label htmlFor="profilePic">Profile Picture (optional):</label>
+                <input
+                    type="file"
+                    accept="image/*"
+                    id="profilePic"
+                    onChange={(e) => setSelectedFile(e.target.files[0])}
+                />
+                {selectedFile && (
+                    <img
+                        src={URL.createObjectURL(selectedFile)}
+                        alt="Preview"
+                        style={{ width: "200px", marginTop: "10px" }}
+                    />
+                )}
+            </div>
 
-        <div>
-            <label htmlFor="location">Location:</label>
-            <select 
-            id="location"
-            value={locationId}
-            onChange={(e) => setLocationId(e.target.value)}
-            required
-            >
-                <option value="">Select a location</option>
-                  {locations.map((loc) => (
-                     <option key={loc.id} value={loc.id}>
-                     {loc.name}
-                    </option>
-                ))}
-            </select>
+            <div>
+                <label htmlFor="city">City:</label>
+                <input
+                    type="text"
+                    id="city"
+                    value={formData.city || ""}
+                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    placeholder="enter city"
+                />
+            </div>
+
+            <div>
+                <label htmlFor="country">Country:</label>
+                <input
+                    type="text"
+                    id="country"
+                    value={formData.country || ""}
+                    onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                    placeholder="enter country"
+                />
+            </div>
+
             <button type="button" onClick={handleUseLocation}>
                 Use My Location
-             </button>
-        </div>
+            </button>
 
-       
-      <div>
-        <label htmlFor="shippingOption">Shipping Option (optional):</label>
-        <select
-          id="shippingOption"
-          value={shippingOption}
-          onChange={(e) => setShippingOption(e.target.value)}
-        >
-          <option value="">Select an option</option>
-          {shippingOptions.map((option) => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </select>
-      </div>
+            <div>
+                <label htmlFor="shippingOption">Shipping Option (optional):</label>
+                <select
+                    id="shippingOption"
+                    value={formData.shippingOption || ""}
+                    onChange={(e) => setFormData({ ...formData, shippingOption: e.target.value })}
+                >
+                    <option value="">Select an option</option>
+                    {shippingOptions.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                    ))}
+                </select>
+            </div>
 
-      <div>
-        <label htmlFor="shippingResponsibility">Shipping Responsibility:</label>
-        <select
-          id="shippingResponsibility"
-          value={shippingResponsibility}
-          onChange={(e) => setShippingResponsibility(e.target.value)}
-          required
-        >
-          <option value="">Select one</option>
-          {responsibilities.map((role) => (
-            <option key={role} value={role}>{role}</option>
-          ))}
-        </select>
-      </div>
+            <div>
+                <label htmlFor="shippingResponsibility">Shipping Responsibility (optional):</label>
+                <select
+                    id="shippingResponsibility"
+                    value={formData.shippingResponsibility || ""}
+                    onChange={(e) => setFormData({ ...formData, shippingResponsibility: e.target.value })}
+                >
+                    <option value="">Select one</option>
+                    {responsibilities.map((role) => (
+                        <option key={role} value={role}>{role}</option>
+                    ))}
+                </select>
+            </div>
 
-      <button type="button" onClick={prevStep}>Back</button>
-      <button type="submit" disabled={uploading}>
-        {uploading ? "Uploading..." : "Complete Registration"}
-      </button>
-      {error && <p className="error">{error}</p>}
+            
+            <label htmlFor="terms">
+                <input id="terms" name="terms" type="checkbox" checked={agreedToTerms} 
+                onChange={(e) => setAgreedToTerms(e.target.checked)} required />
+                I agree to the <a href="/terms" target="_blank">Terms and Privacy Policy</a>
+            </label>
 
-    </form>
-);
+
+            <button type="button" onClick={prevStep}>Back</button>
+            <button type="submit" disabled={uploading || !agreedToTerms}>
+                {uploading ? "Uploading..." : "Complete Registration"}
+            </button>
+            {error && <p className="error">{error}</p>}
+        </form>
+    );
 }
 
-export default RegisterFormStep2
+export default RegisterFormStep2;

@@ -3,8 +3,10 @@ import { useContext } from "react";
 import { AuthContext } from "./AuthContext";
 
 function StickyNavbar() {
-    const { user, logout } = useContext(AuthContext);
+    const { user, logout, loading } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    if (loading) return <div className="navbar-loading">Loading...</div>;
 
     return (
         <div className="sticky-bottom-navbar">
@@ -15,7 +17,13 @@ function StickyNavbar() {
             { user ? (
                 <>
                       <Link to="/me">☺️ Profile</Link>
-                      <button onClick={logout}> ✌️ Logout </button>
+                      <button onClick={ () => {
+                        logout();
+                        navigate("/login");
+                      }}  
+                       > 
+                        ✌️ Logout 
+                        </button>
                 </>
             ) : (
                 

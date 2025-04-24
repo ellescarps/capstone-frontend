@@ -56,7 +56,12 @@ function LoginForm() {
                 });
 
                 const json = await response.json();
-                if (!response.ok) throw new Error(json.message || "Login failed");
+                console.log(json);
+
+                if (!response.ok) {
+                    setGeneralError(json.error || "Invalid email or password");
+                    return;
+                    }
 
                 localStorage.setItem("token", json.token);
                 const user = await fetchUserData(json.token); 

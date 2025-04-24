@@ -53,7 +53,7 @@ return(
     <div className="post-details">
     <p><strong>Category:</strong> {post.category.name} </p>
     <p><strong>Posted by:</strong> {post.user.username} </p>
-    <p><strong>Location:</strong> {post.location.city} </p>
+    <p><strong>Location:</strong> {post.latitude}, {post.longitude}</p>
     <p><strong>Shipping:</strong> ${post.shippingCost} - {post.shippingOption}</p>
     <p><strong>Responsibility:</strong> {post.shippingResponsibility} </p>
     <p><strong>Availability:</strong> {post.isAvailable ? "Available" : "Unavailable"} </p>

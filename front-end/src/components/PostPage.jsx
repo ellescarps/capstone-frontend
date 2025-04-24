@@ -33,7 +33,8 @@ return (
             image={post.images[0]?.url}
             category={post.category.name}
             user={post.user.username}
-            location={post.location.city}
+            latitude={post.latitude}
+            longitude={post.longitude}
             isAvailable={post.isAvailable}
             shippingCost={post.shippingCost}
             shippingResponsibility={post.shippingResponsibility}

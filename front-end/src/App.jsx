@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import {BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from './components/Home';
 import ProfilePage from './components/Profile';
 import SinglePost from './components/SinglePost';
@@ -13,6 +13,7 @@ import StickyNavbar from './components/StickyNavbar';
 import Navbar from './components/Navbar';
 
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -22,11 +23,10 @@ function App() {
 }
 
 function AppContent() {
-  const location = useLocation(); 
 
   return (
     <div>
-      {/* Conditionally render Navbar based on the current route */}
+   
       {location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/profile' && <Navbar />}
 
       <Routes>

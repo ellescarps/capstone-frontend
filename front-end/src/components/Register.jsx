@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import RegisterFormStep1 from "./RegisterFormStep1";
 import RegisterFormStep2 from "./RegisterFormStep2"
-import RegisterComplete from "./RegisterComplete";
 
-function Register({ goHome }) {
+
+function Register() {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         // step1 fields
@@ -12,38 +12,37 @@ function Register({ goHome }) {
         password: "",
         // step2 fields
         profilePicUrl: "",
-        locationId: "",
+        city: "",
+        country: "",
         shippingOption: "",
         shippingResponsibility: "",
     });
 
     const nextStep = () => setStep((prev) => prev + 1);
     const prevStep = () => setStep((prev) => prev - 1);
+ 
 
-    switch(step) {
-        case 1:
-            return (
-                <RegisterFormStep1
-                    formData={formData}
-                    setFormData={setFormData}
-                    nextStep={nextStep}
-                />
-            );
-        case 2:
-            return (
-                <RegisterFormStep2
-                    formData={formData}
-                    setFormData={setFormData}
-                    nextStep={nextStep}
-                    prevStep={prevStep}
-                />
-            );
-        case 3:
-            return <RegisterComplete formData={formData} goHome={goHome} />;
-        default:
-            return <div>Error: Unknown step</div>
-    }
-}
+    return (
+            <div>
+                    {step === 1 && (
+                        <RegisterFormStep1
+                            formData={formData}
+                            setFormData={setFormData}
+                            nextStep={nextStep}
+                        />
+                    )}
+                    {step === 2 && (
+                        <RegisterFormStep2
+                            formData={formData}
+                            setFormData={setFormData}
+                            prevStep={prevStep}
+                        />
+                    )}
+                    
+            </div>
+        );
+}       
+ 
 
 
 export default Register
