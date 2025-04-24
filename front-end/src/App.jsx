@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import {BrowserRouter, Routes, Route } from "react-router-dom";
+import {BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import HomePage from './components/Home';
 import ProfilePage from './components/Profile';
 import SinglePost from './components/SinglePost';
@@ -24,11 +24,18 @@ function App() {
 }
 
 function AppContent() {
+  const location = useLocation();
+
+  const hideNavbar =
+    location.pathname === '/login' ||
+    location.pathname === '/register' ||
+    location.pathname === '/me' ||
+    location.pathname.startsWith('/users/');
 
   return (
     <div>
    
-      {location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/profile' && <Navbar />}
+        {!hideNavbar && <Navbar />}
 
       <Routes>
         <Route path="/" element={<HomePage />} />

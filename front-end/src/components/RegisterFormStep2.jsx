@@ -13,7 +13,6 @@ function RegisterFormStep2({ formData, setFormData, prevStep, error, setError })
     const responsibilities = ["GIVER", "RECEIVER", "SHARED"];
 
 
-   
 
     const handleUseLocation = async () => {
         const apiKey = import.meta.env.VITE_OPENCAGE_API_KEY;
