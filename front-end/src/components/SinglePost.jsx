@@ -51,8 +51,8 @@ return(
         </div>
 
     <div className="post-details">
-    <p><strong>Category:</strong> {post.category.name} </p>
-    <p><strong>Posted by:</strong> {post.user.username} </p>
+    <p><strong>Category:</strong> {post.category.name  || "Unknown Category"} </p>
+    <p><strong>Posted by:</strong> {post.user.name} </p>
     <p><strong>Location:</strong> {post.latitude}, {post.longitude}</p>
     <p><strong>Shipping:</strong> ${post.shippingCost} - {post.shippingOption}</p>
     <p><strong>Responsibility:</strong> {post.shippingResponsibility} </p>
@@ -68,7 +68,7 @@ return(
     {post.comments.length > 0 ? (
     post.comments.map(comment => (
         <div key={comment.id}>
-            <p><strong>{comment.user.username}:</strong> {comment.content}</p>
+            <p><strong>{comment.user?.name || "Anonymous"}:</strong> {comment.content}</p>
         </div> 
         )) 
         ) : (

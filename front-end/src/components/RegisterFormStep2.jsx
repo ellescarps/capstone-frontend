@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../API";
 
-function RegisterFormStep2({ formData, setFormData, prevStep }) {
+function RegisterFormStep2({ formData, setFormData, prevStep, error, setError }) {
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploading, setUploading] = useState(false);
-    const [error, setError] = useState(null);
     const [agreedToTerms, setAgreedToTerms] = useState(false);
     const navigate = useNavigate();
+
 
     const shippingOptions = ["PICKUP", "SHIPPING", "DROPOFF"];
     const responsibilities = ["GIVER", "RECEIVER", "SHARED"];
@@ -104,7 +104,7 @@ function RegisterFormStep2({ formData, setFormData, prevStep }) {
             try {
                 finalProfilePicUrl = await uploadToCloudinary();
             } catch (error) {
-                setError("Image upload failed.");
+                setError("Image upload failed. Please try again.");
                 return;
             }
         }
@@ -112,37 +112,37 @@ function RegisterFormStep2({ formData, setFormData, prevStep }) {
        
         const finalData = {
             ...formData,
-            name: formData.name?.trim(),
-            email: formData.email?.trim(),
-            password: formData.password?.trim(),
             profilePicUrl: finalProfilePicUrl,
-            city: formData.city?.trim() || "Unknown City",      
-            country: formData.country?.trim() || "Unknown Country", 
+            city: formData.city?.trim() || "Enter your city",      
+            country: formData.country?.trim() || "Enter your Country", 
             shippingResponsibility: formData.shippingResponsibility ?? "SHARED", 
             shippingOption: formData.shippingOption ?? "PICKUP",  
+            userId: formData.userId
           };
     
-        try {
-            const response = await fetch(`${API_URL}/register`, {
+          try {
+            setError(null); 
+            setUploading(true);
+
+            const response = await fetch(`${API_URL}/register-step2`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(finalData),
             });
-    
+
             const data = await response.json();
-    
             if (!response.ok) {
-                throw new Error(data.message || "Registration failed");
+                throw new Error(data.message || "Error in Step 2 registration");
             }
-    
-            
-            alert("Registration successful! Please log in, comrade!!");
-            navigate("/login");
-            
-        } catch (err) {
-            setError(err.message || "Something went wrong. Please try again.");
+
+            alert("Registration successful!");
+            navigate("/");
+        } catch (error) {
+            setError(error.message || "Something went wrong during registration");
+        } finally {
+            setUploading(false); 
         }
     };
 

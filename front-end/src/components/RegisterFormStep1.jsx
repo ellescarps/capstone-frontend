@@ -1,9 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-
-function RegisterFormStep1( {formData, setFormData, nextStep}) {
-    const [error, setError] = useState(null);
- 
+function RegisterFormStep1( {formData, setFormData, nextStep, error, setError}) {
 
     const validateEmail = (email) => {
         return /\S+@\S+\.\S+/.test(email);
@@ -30,7 +27,7 @@ function RegisterFormStep1( {formData, setFormData, nextStep}) {
         }
 
         setError(null);
-        nextStep(); 
+        nextStep();
     };
 
     return (
