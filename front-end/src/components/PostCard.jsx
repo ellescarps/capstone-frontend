@@ -24,7 +24,7 @@ function PostCard({
 
 
 return (
-    <div>
+    <>
         <div className="post-card" onClick={onClick}>
         {isFeatured && <div className="featured">Featured</div>}
         <img src={image} alt="image of post" />
@@ -43,21 +43,39 @@ return (
             </span>
         </div>
 
-    <div className="post-footer">
-        <span className="user">Posted by {user}</span>
-        <span className="time">{new Date(createdAt).toLocaleDateString()}</span>
-    </div>
 
-    <div className="post-stats">
-        <span> 💜 {likesCount}</span>
-        <span> ✨ {favoritesCount}</span>
-        <span> {commentsCount} </span>
-        {trendingScore > 0 && <span>🔥 {trendingScore}</span>}
-    </div>
+        
+            {shippingCost && (
+                <span className="shipping-info">
+                    🚚 Shipping Cost: ${shippingCost}
+                </span>
+            )}
+            {shippingResponsibility && (
+                <span className="shipping-info">
+                    📦 Shipping Responsibility: {shippingResponsibility}
+                </span>
+            )}
+            {shippingOption && (
+                <span className="shipping-info">
+                    🚚 Shipping Option: {shippingOption}
+                </span>
+            )}
+        </div>
 
+
+            <div className="post-footer">
+                <span className="user">Posted by {user}</span>
+                <span className="time">{new Date(createdAt).toLocaleDateString()}</span>
+            </div>
+
+            <div className="post-stats">
+                <span> 💜 {likesCount}</span>
+                <span> ✨ {favoritesCount}</span>
+                <span> {commentsCount} </span>
+                {trendingScore > 0 && <span>🔥 {trendingScore}</span>}
+            </div>
         </div>
-        </div>
-    </div>
+    </>
 );
 
 }

@@ -86,7 +86,8 @@ return (
                         description={post.description}
                         image={post.images[0]?.url}
                         category={post.category.name}
-                        
+                        latitude={post.latitude}    
+                        longitude={post.longitude} 
                         isAvailable={post.isAvailable}
                         shippingCost={post.shippingCost}
                         shippingResponsibility={post.shippingResponsibility}
