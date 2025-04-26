@@ -11,6 +11,7 @@ function Register() {
         // step1 fields
         name: "",
         email: "",
+        username: "",
         password: "",
         userId: null,
         // step2 fields

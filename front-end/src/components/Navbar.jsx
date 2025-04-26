@@ -88,3 +88,17 @@ return(
 export default Navbar
 
 
+
+  {/* <select 
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                className="category-dropdown"
+            >
+
+                <option value=""> Select Category </option>
+                {categories.map((category) => (
+                    <option key={category.id} value={category.name.toLowerCase()}>
+                        {category.name}
+                    </option>
+                ))}
+            </select> */}

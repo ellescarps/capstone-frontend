@@ -9,9 +9,9 @@ function RegisterFormStep1( {formData, setFormData, nextStep, error, setError}) 
       const handleSubmit = (e) => {
         e.preventDefault();
 
-        const { name, email, password } = formData;
+        const { name, email, username, password } = formData;
 
-        if (!name || !email || !password) {
+        if (!name || !email || !username || !password) {
             setError("Please fill out all fields.");
             return;
         }
@@ -21,6 +21,11 @@ function RegisterFormStep1( {formData, setFormData, nextStep, error, setError}) 
             return;
         }
 
+        if (username.length < 6 || username.length > 35) {
+            setError("Username must be between 6 and 35 characters long.");
+            return;
+        }
+        
         if (password.length < 6) {
             setError("Password must be at least 6 characters long.");
             return;
@@ -66,6 +71,23 @@ function RegisterFormStep1( {formData, setFormData, nextStep, error, setError}) 
                   required
               />
           </div>
+
+          <div>
+            <label htmlFor="username">Username:</label>
+            <input 
+            type="text"
+            id="username"
+            placeholder="username"
+            value={formData.username}
+            onChange={(e) => 
+                setFormData({
+                    ...formData,
+                    username: e.target.value,
+            })}
+            required
+             />
+        </div>
+
 
           <div>
               <label htmlFor="password">Password:</label>

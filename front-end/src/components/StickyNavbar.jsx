@@ -16,7 +16,7 @@ function StickyNavbar() {
 
             { user ? (
                 <>
-                      <Link to="/me">☺️ Profile</Link>
+                      <Link to={`/account/${user.id}`}>☺️ Profile</Link>
                       <button onClick={ () => {
                         logout();
                         navigate("/login");

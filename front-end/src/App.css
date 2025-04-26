@@ -1,10 +1,69 @@
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-} */
+/* Base styles - for mobile */
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+/* Tablet & Laptop styles */
+@media screen and (min-width: 768px) {
+  .content-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;  /* Creates 3 equal-width columns */
+    gap: 20px;  /* Adds space between the columns */
+    margin-top: 20px;
+}
+
+.content-column {
+    background-color: #f5f5f5;  /* Optional: You can add a background to each column */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.posts-grid, .callouts-grid, .collections-grid {
+    display: grid;
+    grid-template-columns: 1fr;  /* Ensures posts, callouts, and collections are stacked */
+    gap: 20px;
+}
+
+.profile-container {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+    text-align: center;
+}
+
+.profile-header img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.profile-actions button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.profile-actions button:hover {
+    background-color: #0056b3;
+}
+
+}
 
 
+/* Small screen (like iPhone) */
+@media screen and (max-width: 430px) {
+  /* special tweaks for tiny screens */
+}
 
 
