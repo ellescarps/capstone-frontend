@@ -56,7 +56,7 @@ const getCategoryIcon = (name) => {
 return(
         <header className="navbar">
             <div className="navbar-container">
-                <h1>the People's Marketspace</h1>
+                <a href="/"><h1>the People's Marketspace</h1></a>
 
                 <input
                  type="text"
