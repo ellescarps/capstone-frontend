@@ -1,69 +1,473 @@
-/* Base styles - for mobile */
+/* Global Styles */
 body {
-  margin: 0;
-  font-family: sans-serif;
+    margin: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
 }
 
-/* Tablet & Laptop styles */
-@media screen and (min-width: 768px) {
-  .content-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;  /* Creates 3 equal-width columns */
-    gap: 20px;  /* Adds space between the columns */
-    margin-top: 20px;
+/* Navbar container */
+.navbar {
+  background-color: #b984d7;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center all content */
+  padding: 20px 0;
 }
 
-.content-column {
-    background-color: #f5f5f5;  /* Optional: You can add a background to each column */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.posts-grid, .callouts-grid, .collections-grid {
-    display: grid;
-    grid-template-columns: 1fr;  /* Ensures posts, callouts, and collections are stacked */
-    gap: 20px;
-}
-
-.profile-container {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.profile-header {
+/* Text-based Title */
+.site-title {
+    font-size: 50px; /* Large font size for title */
+    font-weight: bold;
+    color: #e5e847; /* Vibrant color to make the title stand out */
+    text-transform: uppercase;
+    letter-spacing: 30px;
     text-align: center;
+    margin-left: 50px;
+    margin-bottom: 20px;  /* Add space below the title */
+}
+/* Search Bar */
+.search-bar {
+  color:white;
+  width: 60%;
+  text-align: center;
+  font-size: 45px;
+  padding: 50px;
+  border-radius: 30px;
+  border: 11px solid #9984a765;
+  transition: 0.3s;
+  margin-bottom: 20px;  /* Add space below the search bar */
 }
 
-.profile-header img {
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
+.search-bar:focus {
+  outline: none;
+  border-color: rgba(233, 15, 226, 0.5); /* Add a focus color */
+  box-shadow: 0 0 0 5px rgba(233, 15, 226, 0.5), inset 0 0 0 2px #e498e3; /* Shadow effect with border-like style */
+  background-image: url('stars.jpg'); /* Optional: add a background image */
+  background-size: cover;
+  background-position: center;
 }
 
-.profile-actions button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
+/* Category Scroll Container */
+.category-scroll-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  width: 100%;
+  padding: 10px 20px;
+}
+
+/* Category Icon Button */
+.category-icon {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;     /* Center align items */
+    background-image: url('stars.jpg');
+    background-size: cover; /* Make the background image cover the whole page */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-attachment: fixed; /* Keep the image fixed when scrolling */
+    padding: 10px 15px;
+    font-size: 1rem;
+    text-align: center;
+    border-radius: 50px;
+    border: 10px solid #260b36;
     cursor: pointer;
-    margin: 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .category-icon:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6); /* Glow effect instead of hiding background */
+  }
+  
+  .emoji {
+    font-size: 1.5rem;
+  }
+  
+  .label {
+    margin-top: 5px; /* Adds space between the icon and the label */
+    font-size: 0.9rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-transform: capitalize; /* Optional: Capitalizes the category name */
+  }
+
+  /* Home Component */
+
+  .home-background {
+    background-image: url('earth.jpg'); /* Add your image path */
+    background-size: cover; /* Make the background image cover the whole page */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-attachment: fixed; /* Keep the image fixed when scrolling */
+  }
+  
+  .tab-buttons {
+    display: flex;
+    justify-content: space-evenly; /* This spreads the buttons evenly */
+    background-color: rgba(193, 199, 207, 0.716);
+    padding: 10px;
+  }
+  
+  .tab-buttons button {
+    background: none;
+    color: rgb(90, 28, 80);
+    padding: 10px 20px;
+    font-size: 20px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    cursor: pointer;
+    position: relative;
+    border: none; /* removes blue border */
+    outline: none; /* removes focus outline */
+  }
+
+  .tab-buttons button:focus {
+    outline: none;
+  }  
+  
+  .tab-buttons button.active {
+    font-weight: bold; /* Optional: Make active tab bold */
+  }
+  
+  .tab-buttons button:hover {
+    text-decoration: none; /* Remove default underline */
+  }
+  
+  .tab-buttons button::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: transparent; /* Initial state is no underline */
+    transition: background-color 0.3s ease-in-out,  box-shadow 0.3s ease-in-out;
+  }
+  
+  .tab-buttons button:hover::after {
+    background-color: #000000; /* Pinkish glow color */
+
+  }
+
+  .tab-buttons button.active::after {
+    background-color: #000000; /* Pinkish glow color */
+  }
+  
+  
+  .sticky-bottom-navbar {
+    display: flex;
+    justify-content: space-between; /* Creates space between elements but keeps them close */
+    align-items: center; /* Align items vertically in the center */
+    padding: 10px 20px; /* Adjust padding as necessary */
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Optional: To give the navbar a background */
+    color: white; /* Optional: For text color */
 }
 
-.profile-actions button:hover {
-    background-color: #0056b3;
+.sticky-bottom-navbar a, .sticky-bottom-navbar button {
+    color: white; /* Ensuring text color matches */
+    text-decoration: none; /* Remove underline from links */
+    margin: 0 10px; /* Adds some margin to space out the elements slightly */
+    font-size: 20px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+.sticky-bottom-navbar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.sticky-bottom-navbar a:hover,
+.sticky-bottom-navbar button:hover {
+    color: #f0a500; /* Optional: Hover effect for button */
 }
 
 
-/* Small screen (like iPhone) */
-@media screen and (max-width: 430px) {
-  /* special tweaks for tiny screens */
+/* styling home page post and callout cards */
+/* Main Grid Layout */
+.posts-grid, .callouts-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    padding: 20px;
 }
 
+/* Base Card Styles */
+.post-card, .callout-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+.post-card:hover, .callout-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Header/Image Area */
+.post-image-wrapper {
+    height: auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.post-image, .callout-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.post-card:hover .post-image, .callout-card:hover .callout-image {
+    transform: scale(1.05);
+}
+
+/* Featured Label */
+.featured-label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: #FF6B6B;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Card Content */
+.post-content, .callout-details {
+    padding: 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-title, .callout-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.post-description, .callout-card p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+/* Meta Information */
+.post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #666;
+}
+
+.meta-item .icon {
+    margin-right: 4px;
+    font-size: 14px;
+}
+
+/* Category Tag */
+.category-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    margin-right: 8px;
+}
+
+/* Availability */
+.availability {
+    font-weight: 600;
+}
+
+.available {
+    color: #4CAF50;
+}
+
+.unavailable {
+    color: #F44336;
+}
+
+/* Footer with User and Rating */
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 8px;
+    background-color: #ddd;
+}
+
+.username {
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+}
+
+.stars {
+    color: #FFC107;
+    font-size: 14px;
+    margin-right: 4px;
+}
+
+.rating-count {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Callout Card Specific Styles */
+.callout-card {
+    background-image: url('white-paper-texture.jpg');
+    background-size: cover; /* Make the background image cover the whole page */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-attachment: fixed; /* Keep the image fixed when scrolling */
+}
+
+.callout-card h3 {
+    font-size: 20px;
+    color: #2c3e50;
+}
+
+.callout-card p {
+    color: #7f8c8d;
+}
+
+/* Style for the entire Create Post section */
+
+.create-post-wrapper {
+  background-image: url('stars.jpg'); /* Ensure the path is correct */
+  background-size: cover; /* Make the background image cover the whole page */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  min-height: 100vh; /* Ensure the wrapper covers the full height */
+  padding: 20px; /* Add some padding around the wrapper */
+}
+
+.create-post {
+  width: 500px;
+  max-width: 800px;
+  padding: 50px;
+  margin-top: 70px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #ffffff; /* Ensure the form background is white */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  overflow: auto; /* Prevent overflow if content exceeds height */
+}
+
+/* Title style */
+.create-post-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Form container styling */
+.create-post-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style for each form group */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Labels for inputs */
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Input and textarea field styles */
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Textarea specific styling */
+.form-textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+/* Button style */
+.submit-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Button hover effect */
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
+/* Styling for input file field */
+.form-input[type="file"] {
+  padding: 5px;
+}
+
+/* message */
 

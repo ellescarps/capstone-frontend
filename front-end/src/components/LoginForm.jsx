@@ -63,7 +63,8 @@ function LoginForm() {
                     return;
                     }
 
-                localStorage.setItem("token", json.token);
+                  
+                login(json.token); 
                 const user = await fetchUserData(json.token); 
                 login(user);
                 setEmail("");

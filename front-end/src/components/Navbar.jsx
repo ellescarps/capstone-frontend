@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../API";
 
 
-function Navbar() {
+function Navbar({ setSearch, search }) {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState("");
     const [categories, setCategories] = useState([]);
@@ -22,11 +22,12 @@ function Navbar() {
         fetchCategories();
     }, []);
 
-const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    navigate(`/?search=${value}`);
-};
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);  
+        setSearch(e.target.value);    
+      };
+    
+    
 
 const handleCategoryClick = (categoryName) => {
     navigate(`/categories/${categoryName.toLowerCase()}`)
@@ -53,19 +54,20 @@ const getCategoryIcon = (name) => {
 };
 
 
-return(
+return (
         <header className="navbar">
             <div className="navbar-container">
-                <a href="/"><h1>the People's Marketspace</h1></a>
-
+                <a href="/"><h1 className="site-title">the People's Marketspace</h1></a>
+            </div>     
+            
                 <input
                  type="text"
-                 placeholder="Search"
+                 placeholder="search for what you need here 📬"
                  value={searchQuery}
                  onChange={handleSearchChange}
                  className="search-bar"
                  />
-            </div>     
+      
 
             <div className="category-scroll-container">
             {categories.map( (category) => (
@@ -75,7 +77,7 @@ return(
                     onClick={ () => handleCategoryClick(category.name)}
                 >
                     <span className="emoji"> {getCategoryIcon(category.name)} </span>
-                    <span className="label"> {category.name} </span>
+                    {/* <span className="label"> {category.name} </span> */}
                 </button>
             ))}
             </div>

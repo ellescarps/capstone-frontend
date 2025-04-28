@@ -1,85 +1,70 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 
 function PostCard({
-        title,
-        description,
-        image,
-        category,
-        user,
-        latitude,
-        longitude,
-        isAvailable,
-        shippingCost,
-        shippingResponsibility,
-        shippingOption,
-        isFeatured,
-        trendingScore,
-        createdAt,
-        likesCount,
-        commentsCount,
-        favoritesCount,
-        onClick,
-    }) {
-
-
-return (
-    <>
+    title,
+    description,
+    image,
+    category,
+    user,
+    city,
+    country,
+    isAvailable,
+    shippingCost,
+    shippingResponsibility,
+    shippingOption,
+    isFeatured,
+    trendingScore,
+    createdAt,
+    likesCount,
+    commentsCount,
+    favoritesCount,
+    onClick,
+}) {
+    return (
         <div className="post-card" onClick={onClick}>
-        {isFeatured && <div className="featured">Featured</div>}
-        <img src={image} alt="image of post" />
-
-        <div className="post-content">
-        <h2 className="post-title">{title}</h2>
-        <p className="post-description">{description}</p>
-
-        <div className="post-meta">
-            <span className="category">{category}</span>
-            <span className="location">
-            {latitude && longitude ? `📍 (${latitude.toFixed(3)}, ${longitude.toFixed(3)})` : "📍 Location pending"}
-            </span>
-            <span className={`availability ${isAvailable ? 'available' : 'unavailable'}`}>
-                {isAvailable ? "Available" : "Unavailable"}
-            </span>
-        </div>
-
-
-        
-            {shippingCost && (
-                <span className="shipping-info">
-                    🚚 Shipping Cost: ${shippingCost}
-                </span>
-            )}
-            {shippingResponsibility && (
-                <span className="shipping-info">
-                    📦 Shipping Responsibility: {shippingResponsibility}
-                </span>
-            )}
-            {shippingOption && (
-                <span className="shipping-info">
-                    🚚 Shipping Option: {shippingOption}
-                </span>
-            )}
-        </div>
-
-
-            <div className="post-footer">
-                <span className="user">Posted by {user}</span>
-                <span className="time">{new Date(createdAt).toLocaleDateString()}</span>
+            <div className="post-image-wrapper">
+                <img src={image} alt={`Image for ${title}`} className="post-image" />
+                {isFeatured && <div className="featured-label">Featured</div>}
             </div>
 
-            <div className="post-stats">
-                <span> 💜 {likesCount}</span>
-                <span> ✨ {favoritesCount}</span>
-                <span> {commentsCount} </span>
-                {trendingScore > 0 && <span>🔥 {trendingScore}</span>}
+            <div className="post-content">
+                <h2 className="post-title">{title}</h2>
+                <p className="post-description">{description}</p>
+
+                <div className="post-meta">
+                    <span className="category">{category}</span>
+                    <span
+                        className={`availability ${isAvailable ? "available" : "unavailable"}`}
+                    >
+                        {isAvailable ? "Available" : "Unavailable"}
+                    </span>
+
+                    <div className="location-date">
+                        <span className="location">
+                            {city && country ? `📍 ${city}, ${country}` : "📍 Location pending"}
+                        </span>
+                        {createdAt && (
+                            <span className="date">{new Date(createdAt).toLocaleDateString()}</span>
+                        )}
+                    </div>
+                </div>
+
+                <div className="post-footer">
+                    <div className="user-info">
+                         <Link to={`/profile/${user?.username || "unknown"}`} className="username">
+                            {user?.username || "Unknown"}
+                        </Link>
+                    </div>
+                    <div className="post-stats">
+                        <span className="stat-item">💜 {likesCount || 0}</span>
+                        <span className="stat-item">💬 {commentsCount || 0}</span>
+                        <span className="stat-item">⭐ {favoritesCount || 0}</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </>
-);
-
+    );
 }
 
-
-
-export default PostCard
+export default PostCard;

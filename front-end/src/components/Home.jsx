@@ -1,20 +1,22 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
-import {  useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {  useState, useEffect, useContext } from "react";
 import PostCard from "./PostCard";
 import CalloutCard from './CalloutCard';
-import TrendingCarousel from "./TrendingCarousel";
 import { API_URL } from "../API";
+import { AuthContext } from "./AuthContext";
 
 
-function HomePage() {
+function HomePage({ search }) {
+const { user, token } = useContext(AuthContext);
 const navigate = useNavigate();
 const [allPosts, setAllPosts] = useState([]);
 const [allCallouts, setAllCallouts] = useState([]);
 const [trending, setTrending] = useState([]);
 const [error, setError] = useState(null);
+const [selectedTab, setSelectedTab] = useState('posts');
 
-const [searchParams] = useSearchParams();
-const search = searchParams.get("search")?.toLowerCase();
+
+const searchQuery = search?.toLowerCase(); 
 
 
 async function fetchAllPosts() {
@@ -48,7 +50,7 @@ useEffect( () => {
         }
     }
     getPosts();
-}, []);
+}, [token]);
 
 const postsToDisplay = search 
     ? allPosts.filter(post => 
@@ -66,59 +68,76 @@ const filteredCallouts = search
     if (error) { return <div>Error: {error}</div>};
 
 return (
-    <div>
+    <div className="home-background">
       <div className="homepage-container">
             
 
         <main>
-            <TrendingCarousel posts={trending}/>
 
-            <div className="content-columns">
-                <section>
-                    <h2>Posts</h2>
-                    <div className="posts-grid">
-                    {postsToDisplay.map(post => (
-                        <PostCard
-                        key={post.id}
-                        id={post.id}
-                        onClick={() => navigate(`/posts/${post.id}`)}
-                        title={post.title}
-                        description={post.description}
-                        image={post.images[0]?.url}
-                        category={post.category.name}
-                        latitude={post.latitude}    
-                        longitude={post.longitude} 
-                        isAvailable={post.isAvailable}
-                        shippingCost={post.shippingCost}
-                        shippingResponsibility={post.shippingResponsibility}
-                        shippingOption={post.shippingOption}
-                        createdAt={post.createdAt}
-                        user={post.user.username}
-                        likesCount={post.likes.length}
-                        commentsCount={post.comments.length}
-                        favoritesCount={post.favorites.length}
-                      />
-                    ))}
-                    </div>
-                </section>
-            </div>
+          <div className="tab-buttons">
+            <button
+              className={selectedTab === 'posts' ? 'active' : ''}
+              onClick={() => setSelectedTab('posts')}
+            >
+              POSTS
+            </button>
 
-                    <section>
-                        <h2>Callouts</h2>
-                        <div className="callouts-grid">
-                        {filteredCallouts.map(callout => {
-                           return <CalloutCard 
-                           key={callout.id} 
-                           post={callout} />
-                        })}
-                        </div>
-                    </section>
+            <button
+              className={selectedTab === 'callouts' ? 'active' : ''}
+              onClick={() => setSelectedTab('callouts')}
+            >
+              CALLOUTS
+            </button>
+          </div>
+
+          <div className="content-columns">
+            {selectedTab === 'posts' && (
+              <section>
+                <div className="posts-grid">
+                  {postsToDisplay.map(post => (
+                    <PostCard
+                      key={post.id}
+                      id={post.id}
+                      onClick={() => navigate(`/posts/${post.id}`)}
+                      title={post.title}
+                      description={post.description}
+                      image={post.images[0]?.url}
+                      category={post.category.name}
+                      city={post.city}
+                      country={post.country}
+                      isAvailable={post.isAvailable}
+                      shippingCost={post.shippingCost}
+                      shippingResponsibility={post.shippingResponsibility}
+                      shippingOption={post.shippingOption}
+                      createdAt={post.createdAt}
+                      user={post.user}
+                      likesCount={post.likes.length}
+                      commentsCount={post.comments.length}
+                      favoritesCount={post.favorites.length}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+
+{selectedTab === 'callouts' && (
+              <section>
+                <div className="callouts-grid">
+                  {filteredCallouts.map(callout => (
+                    <CalloutCard
+                      key={callout.id}
+                      post={callout}
+                      user={callout.user} 
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
         </main>
-    
-       
       </div>
     </div>
-);
+  );
 }
 
  export default HomePage

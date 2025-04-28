@@ -3,7 +3,7 @@ import CalloutCard from "./CalloutCard";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../API";
 
-function CalloutPage() {
+function CalloutPage( {search} ) {
     const [callouts, setCallouts] = useState([]);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -27,12 +27,21 @@ function CalloutPage() {
 
     if (!callouts.length) return <p>Loading callouts...</p>
 
+    const filteredCallouts = search
+        ? callouts.filter(callout => 
+            callout.title.toLowerCase().includes(search.toLowerCase()) ||
+            callout.description.toLowerCase().includes(search.toLowerCase())
+        )
+        : callouts;
+
 return (
 
     <div className="callout-page">
         <h1>Callouts</h1>
-        <div className="callouts-grid">
-        {callouts.map(callout => (
+        <div className="callouts-container">
+        {filteredCallouts
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) 
+            .map(callout => (
             <CalloutCard
             key= {callout.id}
             post={callout}

@@ -3,47 +3,50 @@ import { useParams } from 'react-router-dom';
 import PostCard from "./PostCard";
 import CalloutCard from "./CalloutCard";
 import CollectionCard from "./CollectionCard";
-import { API_URL } from "../API";  // Ensure this is the correct path to your API
+import { API_URL } from "../API"; 
 import { AuthContext } from "./AuthContext";
 
 function Account() {
-    const { id } = useParams();  // Get the user's ID from the URL params
+    const { id } = useParams();  
     const [posts, setPosts] = useState([]);
     const [callouts, setCallouts] = useState([]);
     const [collections, setCollections] = useState([]);
-    const [postType, setPostType] = useState('post'); // Default to 'post'
-
-    const { user, loading, token } = useContext(AuthContext);  // Get the token from context
-
+    const [postType, setPostType] = useState('post'); 
+    const [selectedTab, setSelectedTab] = useState('posts');  
+    
+    const { user, loading, token } = useContext(AuthContext);  
+    console.log(token);
     useEffect(() => {
         if (!id || !token) {
-            console.warn("ID or token is missing. Skipping fetch.");
+            if (!loading) {
+                console.warn("ID or token is missing. Skipping fetch.");
+            }
             return;
-          }
+        }
 
-          const controller = new AbortController();  // Create an abort controller
-          const signal = controller.signal;  // Get signal to pass to fetch
+          const controller = new AbortController(); 
+          const signal = controller.signal;  
       
         
-        // Fetch posts or callouts based on the selected type
+  
         const fetchUserPosts = async () => {
             try {
-            const response = await fetch(`${API_URL}/posts/users/${id}?type=${postType}`, {
+            const response = await fetch(`${API_URL}/posts/users/${id}?type=${selectedTab}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`  // Include token in headers
+                    'Authorization': `Bearer ${token}`,
                 },
                 signal,
             });
 
 
             if (response.ok) {
-                const data = await response.json();
-                if (postType === 'post') {
-                    setPosts(data);
+                const json = await response.json();
+                if (selectedTab === 'post') {
+                    setPosts(json);
                 } else {
-                    setCallouts(data);
+                    setCallouts(json);
                 }
             } else {
                 const error = await response.json();
@@ -62,7 +65,7 @@ function Account() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`  // Include token in headers
+                    'Authorization': `Bearer ${token}`,
                 },
                 signal,
             });
@@ -84,14 +87,14 @@ function Account() {
         fetchUserPosts();
         fetchUserCollections();
 
-    // Cleanup on component unmount
+   
     return () => {
-        controller.abort();  // Abort fetch on cleanup
+        controller.abort();  
     };
 
-    }, [id, postType, token]);  // Only re-run the effect when the user ID changes
+    }, [id, postType, selectedTab]); 
 
-    // Handle loading and display user information
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -120,8 +123,14 @@ function Account() {
                     </div>
                 </section>
 
-                <div className="content-columns">
-                    <section>
+                <div className="tabs">
+                <button className="tab" onClick={() => setSelectedTab('posts')}>Posts</button>
+                <button className="tab" onClick={() => setSelectedTab('callouts')}>Callouts</button>
+                <button className="tab" onClick={() => setSelectedTab('collections')}>Collections</button>
+                </div>
+
+    
+                    <section className={`content ${selectedTab === 'posts' ? 'active' : ''}`} id="postsContent">
                         <h2>Posts</h2>
                         <div className="posts-grid">
                         {posts.length > 0 ? (
@@ -134,7 +143,7 @@ function Account() {
                         </div>
                     </section>
 
-                    <section>
+                    <section className={`content ${selectedTab === 'callouts' ? 'active' : ''}`} id="calloutsContent">
                         <h2>Callouts</h2>
                         <div className="callouts-grid">
                         {callouts.length > 0 ? (
@@ -147,7 +156,7 @@ function Account() {
                         </div>
                     </section>
 
-                    <section>
+                        <section className={`content ${selectedTab === 'collections' ? 'active' : ''}`} id="collectionsContent">
                         <h2>Collections</h2>
                         <div className="collections-grid">
                         {collections.length > 0 ? (
@@ -159,7 +168,6 @@ function Account() {
                                 )}
                         </div>
                     </section>
-                </div>
             </main>
         </div>
     );

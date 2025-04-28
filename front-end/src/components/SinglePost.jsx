@@ -2,7 +2,7 @@ import React, { useState, useEffect} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { API_URL } from "../API";
 
-function SinglePost() {
+function SinglePost( {search} ) {
     const { id } = useParams();
     const [post, setPost] = useState(null);
     const [error, setError] = useState(null);
@@ -35,11 +35,20 @@ useEffect( () => {
 if (error) return <div>{error}</div>
 if (!post) return <div>Loading...</div>   
 
+const highlightSearchTerm = (text) => {
+    if (!search) return text;
+    const parts = text.split(new RegExp(`(${search})`, 'gi'));
+    return parts.map((part, index) =>
+        part.toLowerCase() === search.toLowerCase() ? (
+            <span key={index} style={{ backgroundColor: 'yellow' }}>{part}</span>
+        ) : part
+    );
+};
 
 return(
     <div>
         <div className="single-post">
-         <h1>{post.title}</h1>
+         <h1>{highlightSearchTerm(post.title)}</h1>
 
          {post.images && post.images.length > 0 ? (
                 <img src={post.images[0].url} alt={post.title} />
@@ -47,7 +56,7 @@ return(
                 <p>No image available</p>
          )}
 
-         <p>{post.description}</p>
+         <p>{highlightSearchTerm(post.description)}</p>
         </div>
 
     <div className="post-details">

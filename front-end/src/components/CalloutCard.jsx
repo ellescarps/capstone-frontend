@@ -1,17 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-function CalloutCard( {post} ) {
-    return(
-        <div className="callout-card">
-            <h3>{post.title}</h3>
-            <img src={post.images[0]?.url} alt={post.title} className="callout-image" />
-            <p>{post.description}</p>
-
+function CalloutCard({ post, user, onClick }) {
+    
+    return (
+        <div className="callout-card" onClick={onClick}>
             <div className="callout-details">
-                <span>{post.category.name}</span>
+                <h3>{post.title}</h3>
+                <p>{post.description}</p>
+                <div className="callout-footer">
+                    <span className="callout-category">{post.category?.name || "General"}</span>
+                    <div className="user-info">
+                        <Link to={`/profile/${user?.username || "unknown"}`} className="username">
+                            {user?.username || "Unknown"}
+                        </Link>
+                    </div>
+                </div>
             </div>
         </div>
     );
 }
 
-export default CalloutCard
+export default CalloutCard;

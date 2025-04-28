@@ -3,7 +3,7 @@ import PostCard from "./PostCard";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../API";
 
-function PostPage() {
+function PostPage( {search} ) {
 const [posts, setPosts] = useState([]);
 const navigate = useNavigate();
 
@@ -21,11 +21,21 @@ useEffect( () => {
     fetchPosts();
 }, []);
 
+    const filteredPosts = search
+        ? posts.filter(post => 
+            post.title.toLowerCase().includes(search.toLowerCase()) || 
+            post.description.toLowerCase().includes(search.toLowerCase())
+        )
+        : posts;
+
+
 return (
     <div className="post-page">
         <h1>Posts</h1>
-        <div className="post-grid">
-        {posts.map(post => (
+        <div className="post-cards-grid">
+        {filteredPosts
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .map(post => (
             <PostCard
             key={post.id}
             title={post.title}
@@ -33,8 +43,8 @@ return (
             image={post.images[0]?.url}
             category={post.category.name}
             user={post.user.username}
-            latitude={post.latitude}
-            longitude={post.longitude}
+            city={post.city}
+            country={post.country}
             isAvailable={post.isAvailable}
             shippingCost={post.shippingCost}
             shippingResponsibility={post.shippingResponsibility}

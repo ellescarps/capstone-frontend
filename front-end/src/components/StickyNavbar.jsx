@@ -11,11 +11,11 @@ function StickyNavbar() {
     return (
         <div className="sticky-bottom-navbar">
             <Link to="/">🌌 Home</Link>
-            <Link to="/posts">📦 Posts </Link>
-            <Link to="/callouts">📢 Callouts</Link>
 
             { user ? (
                 <>
+                      <Link to="/postcall">📮 Post/Call</Link>
+                      <Link to="/inbox">💌 Inbox</Link>
                       <Link to={`/account/${user.id}`}>☺️ Profile</Link>
                       <button onClick={ () => {
                         logout();
