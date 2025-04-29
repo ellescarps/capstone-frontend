@@ -60,6 +60,7 @@ return (
                 <a href="/"><h1 className="site-title">the People's Marketspace</h1></a>
             </div>     
             
+                
                 <input
                  type="text"
                  placeholder="search for what you need here 📬"
@@ -67,8 +68,6 @@ return (
                  onChange={handleSearchChange}
                  className="search-bar"
                  />
-      
-
             <div className="category-scroll-container">
             {categories.map( (category) => (
                 <button
@@ -77,7 +76,6 @@ return (
                     onClick={ () => handleCategoryClick(category.name)}
                 >
                     <span className="emoji"> {getCategoryIcon(category.name)} </span>
-                    {/* <span className="label"> {category.name} </span> */}
                 </button>
             ))}
             </div>

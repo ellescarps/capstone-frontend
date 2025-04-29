@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./AuthContext";
+import SearchIcon from '@mui/icons-material/Search';
 
 function StickyNavbar() {
     const { user, logout, loading } = useContext(AuthContext);
@@ -11,6 +12,9 @@ function StickyNavbar() {
     return (
         <div className="sticky-bottom-navbar">
             <Link to="/">🌌 Home</Link>
+            <Link to="/search" className="search-icon-link">
+                <SearchIcon />
+            </Link>
 
             { user ? (
                 <>

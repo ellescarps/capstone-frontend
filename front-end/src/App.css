@@ -2,31 +2,30 @@
 body {
     margin: 0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background-color: #f9f9f9;
     color: #333;
 }
 
-/* Navbar container */
+
 .navbar {
   background-color: #b984d7;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center all content */
+  align-items: center;
   padding: 20px 0;
 }
 
-/* Text-based Title */
+
 .site-title {
-    font-size: 50px; /* Large font size for title */
+    font-size: 50px;
     font-weight: bold;
-    color: #e5e847; /* Vibrant color to make the title stand out */
+    color: #e5e847; 
     text-transform: uppercase;
     letter-spacing: 30px;
     text-align: center;
     margin-left: 50px;
-    margin-bottom: 20px;  /* Add space below the title */
+    margin-bottom: 20px;  
 }
-/* Search Bar */
+
 .search-bar {
   color:white;
   width: 60%;
@@ -36,19 +35,40 @@ body {
   border-radius: 30px;
   border: 11px solid #9984a765;
   transition: 0.3s;
-  margin-bottom: 20px;  /* Add space below the search bar */
+  margin-bottom: 20px; 
 }
 
 .search-bar:focus {
   outline: none;
-  border-color: rgba(233, 15, 226, 0.5); /* Add a focus color */
-  box-shadow: 0 0 0 5px rgba(233, 15, 226, 0.5), inset 0 0 0 2px #e498e3; /* Shadow effect with border-like style */
-  background-image: url('stars.jpg'); /* Optional: add a background image */
+  border-color: rgba(233, 15, 226, 0.5); 
+  box-shadow: 0 0 0 5px rgba(233, 15, 226, 0.5), inset 0 0 0 2px #e498e3; 
+  background-image: url('stars.jpg'); 
   background-size: cover;
   background-position: center;
 }
 
-/* Category Scroll Container */
+.category-page{
+  background-image: url('stars.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 12px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+}
+
+.category-title-page {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  padding: 2rem; 
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
 .category-scroll-container {
   display: flex;
   justify-content: center;
@@ -58,16 +78,16 @@ body {
   padding: 10px 20px;
 }
 
-/* Category Icon Button */
+
 .category-icon {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center;     /* Center align items */
+    flex-direction: column; 
+    align-items: center;    
     background-image: url('stars.jpg');
-    background-size: cover; /* Make the background image cover the whole page */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Prevent the image from repeating */
-    background-attachment: fixed; /* Keep the image fixed when scrolling */
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
     padding: 10px 15px;
     font-size: 1rem;
     text-align: center;
@@ -79,7 +99,7 @@ body {
   
   .category-icon:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6); /* Glow effect instead of hiding background */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6); 
   }
   
   .emoji {
@@ -87,25 +107,25 @@ body {
   }
   
   .label {
-    margin-top: 5px; /* Adds space between the icon and the label */
+    margin-top: 5px; 
     font-size: 0.9rem;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    text-transform: capitalize; /* Optional: Capitalizes the category name */
+    text-transform: capitalize; 
   }
 
   /* Home Component */
 
   .home-background {
-    background-image: url('earth.jpg'); /* Add your image path */
-    background-size: cover; /* Make the background image cover the whole page */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Prevent the image from repeating */
-    background-attachment: fixed; /* Keep the image fixed when scrolling */
+    background-image: url('earth.jpg'); 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
   }
   
   .tab-buttons {
     display: flex;
-    justify-content: space-evenly; /* This spreads the buttons evenly */
+    justify-content: space-evenly; 
     background-color: rgba(193, 199, 207, 0.716);
     padding: 10px;
   }
@@ -118,8 +138,8 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     cursor: pointer;
     position: relative;
-    border: none; /* removes blue border */
-    outline: none; /* removes focus outline */
+    border: none; 
+    outline: none; 
   }
 
   .tab-buttons button:focus {
@@ -127,11 +147,11 @@ body {
   }  
   
   .tab-buttons button.active {
-    font-weight: bold; /* Optional: Make active tab bold */
+    font-weight: bold; 
   }
   
   .tab-buttons button:hover {
-    text-decoration: none; /* Remove default underline */
+    text-decoration: none; 
   }
   
   .tab-buttons button::after {
@@ -141,37 +161,37 @@ body {
     left: 0;
     right: 0;
     height: 2px;
-    background-color: transparent; /* Initial state is no underline */
+    background-color: transparent; 
     transition: background-color 0.3s ease-in-out,  box-shadow 0.3s ease-in-out;
   }
   
   .tab-buttons button:hover::after {
-    background-color: #000000; /* Pinkish glow color */
+    background-color: #000000; 
 
   }
 
   .tab-buttons button.active::after {
-    background-color: #000000; /* Pinkish glow color */
+    background-color: #000000; 
   }
   
   
   .sticky-bottom-navbar {
     display: flex;
-    justify-content: space-between; /* Creates space between elements but keeps them close */
-    align-items: center; /* Align items vertically in the center */
-    padding: 10px 20px; /* Adjust padding as necessary */
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px 20px; 
     position: sticky;
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Optional: To give the navbar a background */
-    color: white; /* Optional: For text color */
+    background-color: rgba(0, 0, 0, 0.8); 
+    color: white; 
 }
 
 .sticky-bottom-navbar a, .sticky-bottom-navbar button {
-    color: white; /* Ensuring text color matches */
-    text-decoration: none; /* Remove underline from links */
-    margin: 0 10px; /* Adds some margin to space out the elements slightly */
+    color: white; 
+    text-decoration: none; 
+    margin: 0 10px; 
     font-size: 20px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
@@ -184,12 +204,11 @@ body {
 
 .sticky-bottom-navbar a:hover,
 .sticky-bottom-navbar button:hover {
-    color: #f0a500; /* Optional: Hover effect for button */
+    color: #f0a500; 
 }
 
 
 /* styling home page post and callout cards */
-/* Main Grid Layout */
 .posts-grid, .callouts-grid {
     display: grid;
     gap: 20px;
@@ -197,9 +216,8 @@ body {
     padding: 20px;
 }
 
-/* Base Card Styles */
 .post-card, .callout-card {
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -213,7 +231,6 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Card Header/Image Area */
 .post-image-wrapper {
     height: auto;
     overflow: hidden;
@@ -231,7 +248,7 @@ body {
     transform: scale(1.05);
 }
 
-/* Featured Label */
+
 .featured-label {
     position: absolute;
     top: 12px;
@@ -245,7 +262,6 @@ body {
     text-transform: uppercase;
 }
 
-/* Card Content */
 .post-content, .callout-details {
     padding: 16px;
     flex-grow: 1;
@@ -269,11 +285,11 @@ body {
     flex-grow: 1;
 }
 
-/* Meta Information */
+
 .post-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 9px;
     margin-bottom: 12px;
 }
 
@@ -289,7 +305,7 @@ body {
     font-size: 14px;
 }
 
-/* Category Tag */
+
 .category-tag {
     display: inline-block;
     padding: 4px 8px;
@@ -301,7 +317,6 @@ body {
     margin-right: 8px;
 }
 
-/* Availability */
 .availability {
     font-weight: 600;
 }
@@ -314,7 +329,7 @@ body {
     color: #F44336;
 }
 
-/* Footer with User and Rating */
+
 .post-footer {
     display: flex;
     justify-content: space-between;
@@ -359,13 +374,13 @@ body {
     color: #888;
 }
 
-/* Callout Card Specific Styles */
+
 .callout-card {
     background-image: url('white-paper-texture.jpg');
-    background-size: cover; /* Make the background image cover the whole page */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Prevent the image from repeating */
-    background-attachment: fixed; /* Keep the image fixed when scrolling */
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
 }
 
 .callout-card h3 {
@@ -377,18 +392,18 @@ body {
     color: #7f8c8d;
 }
 
-/* Style for the entire Create Post section */
+
 
 .create-post-wrapper {
-  background-image: url('stars.jpg'); /* Ensure the path is correct */
-  background-size: cover; /* Make the background image cover the whole page */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Prevent the image from repeating */
+  background-image: url('stars.jpg'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  min-height: 100vh; /* Ensure the wrapper covers the full height */
-  padding: 20px; /* Add some padding around the wrapper */
+  justify-content: center; 
+  align-items: center; 
+  min-height: 100vh; 
+  padding: 20px; 
 }
 
 .create-post {
@@ -399,37 +414,37 @@ body {
   margin-bottom: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #ffffff; /* Ensure the form background is white */
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
-  overflow: auto; /* Prevent overflow if content exceeds height */
+  background-color: #ffffff; 
+  box-sizing: border-box; 
+  overflow: auto;
 }
 
-/* Title style */
+
 .create-post-title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 20px;
 }
 
-/* Form container styling */
+
 .create-post-form {
   display: flex;
   flex-direction: column;
 }
 
-/* Style for each form group */
+
 .form-group {
   margin-bottom: 15px;
 }
 
-/* Labels for inputs */
+
 .form-label {
   font-weight: bold;
   margin-bottom: 5px;
   display: block;
 }
 
-/* Input and textarea field styles */
+
 .form-input,
 .form-textarea,
 .form-select {
@@ -441,13 +456,13 @@ body {
   box-sizing: border-box;
 }
 
-/* Textarea specific styling */
+
 .form-textarea {
   height: 150px;
   resize: vertical;
 }
 
-/* Button style */
+
 .submit-btn {
   background-color: #4CAF50;
   color: white;
@@ -459,15 +474,591 @@ body {
   margin-top: 20px;
 }
 
-/* Button hover effect */
+
 .submit-btn:hover {
   background-color: #45a049;
 }
 
-/* Styling for input file field */
+
 .form-input[type="file"] {
   padding: 5px;
 }
 
-/* message */
 
+.home-background2 {
+  background-image: url('/earth.jpg'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; 
+  padding: 2rem; 
+}
+
+
+.single-post-container {
+  background: rgba(255, 255, 255, 0.9); 
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+
+.single-post {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.post-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.post-image-wrapper {
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  transition: filter 0.5s ease, opacity 0.5s ease;
+}
+
+.post-image.loading {
+  filter: blur(20px);
+  opacity: 0.5;
+}
+
+.post-image.loaded {
+  filter: blur(0);
+  opacity: 1;
+}
+
+
+.post-description {
+  margin-top: 16px;
+  font-size: 16px;
+  color: #555;
+}
+
+.post-details {
+  margin-top: 24px;
+}
+
+.post-meta,
+.location-date,
+.shipping-info {
+  margin-bottom: 2px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; 
+}
+
+
+.category {
+  font-weight: bold;
+  color: #888;
+}
+
+.availability {
+  font-weight: bold;
+  color: green;
+}
+
+.availability.unavailable {
+  color: red;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-stats {
+  font-size: 14px;
+  display: flex;
+  gap: 10px;
+}
+
+.message-button-wrapper {
+  display: flex;
+  justify-content: center;  
+  align-items: center;     
+  margin-top: 16px;
+}
+
+.message-button {
+  background-color: #58b353;
+  color: white;
+  font-size: larger;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.message-button:hover {
+  color: rgb(87, 8, 108);
+  background-color: #c896d8;
+}
+
+.comments-section {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.comment {
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #444;
+}
+
+/* inbox page */
+.aim-inbox {
+  background-image: url('earth.jpg'); 
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding: 30px;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.aim-header {
+  font-size: 5rem;
+  color: #f8f8ff;
+  padding: 10px;
+  margin-bottom: 30px;
+  text-shadow:
+  -2px -2px 0 #888,
+   2px -2px 0 #888,
+  -2px  2px 0 #888,
+   2px  2px 0 #888;
+
+}
+
+.aim-message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.aim-message-item {
+  background: #fff8dc;
+  border: 2px solid #f0e68c;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, background 0.2s;
+  cursor: pointer;
+}
+
+.aim-message-item:hover {
+  background: #ffffe0;
+  transform: scale(1.02);
+}
+
+.aim-message-sender {
+  font-weight: bold;
+  color: #0066cc;
+  margin-bottom: 5px;
+  font-size: 1.2rem;
+}
+
+.aim-message-text {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.aim-message-time {
+  font-size: 0.8rem;
+  color: #999;
+  text-align: right;
+}
+
+/* account page */
+
+.account-profile-container {
+  background-image: url('earth.jpg'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.account-profile-header {
+  text-align: center;
+  max-width: 900px;
+  width: 100%;
+  padding: 20px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.account-profile-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.account-profile-header img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 10px;
+  border: 4px solid #eee;
+}
+
+.account-profile-header p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.account-about-me {
+  margin-top: 20px;
+}
+
+.account-about-me h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.account-about-me p {
+  font-size: 1.1rem;
+  color: #777;
+  line-height: 1.6;
+}
+
+.account-profile-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.account-profile-actions button {
+  background-color: #0095f6;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+.account-profile-actions button:hover {
+  background-color: #0077b5;
+}
+
+
+.account-tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 20px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.account-tab {
+  font-size: 1.2rem;
+  color: #555;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  border: none;
+  background: none;
+}
+
+.account-tab:hover {
+  color: #0095f6;
+}
+
+.account-tab.active {
+  color: #0095f6;
+  font-weight: bold;
+  border-bottom: 2px solid #0095f6;
+}
+
+
+.account-content {
+  display: none;
+  margin-top: 30px;
+}
+
+.account-content.active {
+  display: block;
+}
+
+.account-posts-grid, .account-callouts-grid, .account-collections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.account-posts-grid p, .account-callouts-grid p, .account-collections-grid p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #777;
+}
+
+
+.account-post-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.account-post-card:hover {
+  transform: scale(1.05);
+}
+
+.account-post-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.2s ease;
+}
+
+.account-post-card:hover img {
+  opacity: 0.8;
+}
+
+.no-posts{
+  color: rgb(255, 255, 255);
+  font-size: larger;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+
+}
+
+.account-edit-menu {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.account-edit-menu button {
+  padding: 8px 16px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.account-edit-menu button:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: rgb(255, 255, 255);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.search-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  padding: 15px 0;
+  z-index: 100;
+}
+
+.search-input-container {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 24px;
+  padding: 8px 16px;
+  position: relative;
+}
+
+.search-input-container input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  font-size: 16px;
+  outline: none;
+}
+
+.search-icon {
+  color: #666;
+  margin-right: 8px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #333;
+  animation: spin 1s ease-in-out infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.search-tabs {
+  display: flex;
+  margin: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 12px 0;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 16px;
+  cursor: pointer;
+  color: #666;
+}
+
+.tab-button.active {
+  color: #000;
+  border-bottom-color: #000;
+  font-weight: 600;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.result-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 16px;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.result-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 16px;
+}
+
+.user-info h4 {
+  margin: 0 0 4px 0;
+  color: #333;
+}
+
+.bio {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.post-card h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.post-description {
+  margin: 0 0 8px 0;
+  color: #666;
+}
+
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #999;
+}
+
+.category {
+  background: #f0f0f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.no-results, .error-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+}
+
+.error-message {
+  color: #ff4444;
+}

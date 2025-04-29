@@ -14,6 +14,7 @@ import UserProfile from './components/UserProfile';
 import CreatePost from './components/CreatePost';
 import Inbox from './components/Inbox';
 import ProtectedRoute from './components/ProtectedRoute';
+import SearchPage from './components/SearchPage';
 
 
 function App() {
@@ -38,9 +39,10 @@ function App() {
         <Route path="/login" element={<AuthPage />} />
         <Route path="/register" element={<AuthPage />} /> 
         <Route path="/account/:id" element={<Account />} />
-        <Route path="/profile/:username" element={<UserProfile />} />
+        <Route path="/:username" element={<UserProfile />} />
         <Route path="/postcall" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
-        <Route path="/inbox" element={<ProtectedRoute><Inbox /></ProtectedRoute>} />    
+        <Route path="/inbox" element={<ProtectedRoute><Inbox /></ProtectedRoute>} />   
+        <Route path="/search" element={<SearchPage />} /> 
       </Routes>
 
       <StickyNavbar />

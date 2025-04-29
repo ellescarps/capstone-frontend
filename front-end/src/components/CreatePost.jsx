@@ -30,6 +30,17 @@ function CreatePost() {
         if (postType === 'callout' || postType === 'post') {
             setType(postType);
         }
+
+        // / NEW: Scroll to top and force background repaint
+    window.scrollTo(0, 0); // Always scroll to top
+    const wrapper = document.querySelector('.create-post-wrapper');
+    if (wrapper) {
+      wrapper.style.backgroundImage = 'none'; 
+      setTimeout(() => {
+        wrapper.style.backgroundImage = "url('stars.jpg')";
+      }, 10); 
+    }
+
     }, [location]);
 
  
@@ -41,17 +52,9 @@ function CreatePost() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true); 
-
-        console.log(token);
-        if (!token) {
-            alert("You must be logged in to create a post.");
-            setLoading(false);
-            return;
-        }
-
-
-
+        setLoading(true);
+        setError(null);
+      
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
@@ -60,28 +63,44 @@ function CreatePost() {
         formData.append('shippingResponsibility', shippingResponsibility);
         formData.append('city', city);
         formData.append('country', country);
-        formData.append('type', type); 
-        if (image) formData.append('image', image);
-
-        try {
-            const response = await fetch(`${API_URL}/posts`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                }
-            });
-            const data = await response.json();
-            if (data.success) {
-                alert("Your post has been created successfully!");
-                navigate('/'); 
-            } else {
-                console.error('Failed to create post:', data);
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
+        formData.append('type', type);
+        
+        if (image) {
+          formData.append('image', image);
         }
-    };
+      
+        try {
+          const response = await fetch(`${API_URL}/posts`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+              // Don't set Content-Type - let browser set it with boundary
+            },
+            body: formData
+          });
+      
+          const data = await response.json();
+          
+          if (!response.ok) {
+            throw new Error(data.error || data.message || "Failed to create post");
+          }
+      
+          alert("Post created successfully!");
+          navigate('/');
+        } catch (error) {
+          console.error("Post creation failed:", error);
+          setError(error.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+
+
+
+
+
+
 
     const handleUseLocation = async () => {
         const apiKey = import.meta.env.VITE_OPENCAGE_API_KEY;
@@ -98,8 +117,8 @@ function CreatePost() {
                 const response = await fetch(
                     `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`
                 );
-                const data = await response.json();
-                const place = data.results[0];
+                const json = await response.json();
+                const place = json.results[0];
 
                 const detectedCity = place.components.city || place.components.town || place.components.village || "Unknown City";
                 const detectedCountry = place.components.country;

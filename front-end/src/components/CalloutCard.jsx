@@ -11,7 +11,7 @@ function CalloutCard({ post, user, onClick }) {
                 <div className="callout-footer">
                     <span className="callout-category">{post.category?.name || "General"}</span>
                     <div className="user-info">
-                        <Link to={`/profile/${user?.username || "unknown"}`} className="username">
+                        <Link to={`/${user?.username || "unknown"}`} className="username">
                             {user?.username || "Unknown"}
                         </Link>
                     </div>

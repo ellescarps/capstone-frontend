@@ -52,7 +52,7 @@ function PostCard({
 
                 <div className="post-footer">
                     <div className="user-info">
-                         <Link to={`/profile/${user?.username || "unknown"}`} className="username">
+                         <Link to={`/${user?.username || "unknown"}`} className="username">
                             {user?.username || "Unknown"}
                         </Link>
                     </div>
