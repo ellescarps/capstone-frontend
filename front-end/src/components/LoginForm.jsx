@@ -44,9 +44,10 @@ const handleSubmit = async (e) => {
 
  return (
 
-    <form onSubmit={handleSubmit}>
-    <div>
-        <label htmlFor="email">Email</label>
+  <div className="form-container">
+    <form onSubmit={handleSubmit} className="login-form"> 
+    <div className="form-group">
+        <label htmlFor="email" className="form-label">Email</label>
         <input
             id="email"
             type="email"
@@ -54,12 +55,13 @@ const handleSubmit = async (e) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="form-input"
         />
         {emailError && <p className="error">{emailError}</p>}
     </div>
 
-    <div>
-        <label htmlFor="password">Password</label>
+    <div className="form-group">
+        <label htmlFor="password" className="form-label">Password</label>
         <input
             id="password"
             type="password"
@@ -67,18 +69,19 @@ const handleSubmit = async (e) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="form-input"
         />
         {passwordError && <p className="error">{passwordError}</p>}
     </div>
 
-    <button type="submit" disabled={loading}>
+    <button type="submit" disabled={loading} className="submit-button">
         {loading ? "Logging in..." : "Login"}
     </button>
 
     {error && <p className="error">{error}</p>}
 
 </form>
-    
+    </div>
  ); 
 }
 

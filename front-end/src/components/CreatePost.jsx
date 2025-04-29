@@ -17,6 +17,8 @@ function CreatePost() {
     const [type, setType] = useState('post');  
     const [error, setError] = useState(null); 
     const [loading, setLoading] = useState(false); 
+    const [shippingCost, setShippingCost] = useState('');
+
 
 
     const navigate = useNavigate();
@@ -49,16 +51,23 @@ function CreatePost() {
         return null; 
     }
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
       
+        // Validate required fields
+        if (!title || !description || !category || !shippingOption || !shippingResponsibility) {
+          setError('Please fill all required fields');
+          setLoading(false);
+          return;
+        }
+      
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
         formData.append('category', category);
+        formData.append('shippingCost', shippingCost);
         formData.append('shippingOption', shippingOption);
         formData.append('shippingResponsibility', shippingResponsibility);
         formData.append('city', city);
@@ -73,8 +82,8 @@ function CreatePost() {
           const response = await fetch(`${API_URL}/posts`, {
             method: 'POST',
             headers: {
-              'Authorization': `Bearer ${token}`
-              // Don't set Content-Type - let browser set it with boundary
+              'Authorization': `Bearer ${token}`,
+              // Don't set Content-Type - let the browser set it with boundary
             },
             body: formData
           });
@@ -82,23 +91,18 @@ function CreatePost() {
           const data = await response.json();
           
           if (!response.ok) {
-            throw new Error(data.error || data.message || "Failed to create post");
+            throw new Error(data.error || data.message || `HTTP error! status: ${response.status}`);
           }
       
           alert("Post created successfully!");
           navigate('/');
         } catch (error) {
-          console.error("Post creation failed:", error);
-          setError(error.message);
+          console.error("Post creation error details:", error);
+          setError(error.message || "Failed to create post. Please try again.");
         } finally {
           setLoading(false);
         }
       };
-
-
-
-
-
 
 
 
@@ -162,7 +166,7 @@ function CreatePost() {
     return (
         <div className="create-post-wrapper">
         <div className="create-post">
-            <h1 className="create-post-title">Create a New Post</h1>
+            <h1 className="create-post-title">Out Into the Universe</h1>
             <form className="create-post-form" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label className="form-label">Title</label>
@@ -201,6 +205,17 @@ function CreatePost() {
 
 
                 <div className="form-group">
+                    <label>Shipping Cost</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        className="form-input"
+                        placeholder="enter known or temporary cost"
+                        value={shippingCost}
+                        onChange={(e) => setShippingCost(e.target.value)}
+                        />
+                   <br />
+
                     <label className="form-label">Shipping Option</label>
                     <select 
                     className="form-select" 
@@ -209,23 +224,24 @@ function CreatePost() {
                     required
                 >
                     <option value="">Select Shipping Option</option>
-                    <option value="pickup">PICKUP</option>
-                    <option value="shipping">SHIPPING</option>
-                    <option value="dropoff">DROPOFF</option>
+                    <option value="PICKUP">PICKUP</option>
+                    <option value="SHIPPING">SHIPPING</option>
+                    <option value="DROPOFF">DROPOFF</option>
                 </select>
                 </div>
                 <div className="form-group">
                 <label className="form-label">Shipping Responsibility</label>
                     <select 
                         className="form-select" 
+                        name="shippingResponsibility"
                         value={shippingResponsibility} 
                         onChange={(e) => setShippingResponsibility(e.target.value)} 
                         required
                     >
                         <option value="">Select Responsibility</option>
-                        <option value="seller">GIVER</option>
-                        <option value="buyer">RECEIVER</option>
-                        <option value="shared">SHARED</option>
+                        <option value="GIVER">GIVER</option>
+                        <option value="RECEIVER">RECEIVER</option>
+                        <option value="SHARED">SHARED</option>
                     </select>
                 </div>
                 <div className="form-group">

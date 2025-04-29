@@ -35,8 +35,16 @@ function Account() {
 
         const fetchUserData = async () => {
             try {
-                const [postsResponse, collectionsResponse] = await Promise.all([
+                const [postsResponse, calloutsResponse, collectionsResponse] = await Promise.all([
                     fetch(`${API_URL}/posts/users/${id}?type=${selectedTab}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                        signal,
+                    }),
+                    fetch(`${API_URL}/callouts/users/${id}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -53,15 +61,21 @@ function Account() {
                         signal,
                     }),
                 ]);
-
+        
                 if (postsResponse.ok) {
                     const postsData = await postsResponse.json();
-                    setPosts(selectedTab === 'posts' ? postsData : []);
-                    setCallouts(selectedTab === 'callouts' ? postsData : []);
+                    setPosts(postsData);
                 } else {
                     console.error("Error fetching posts:", await postsResponse.json());
                 }
-
+        
+                if (calloutsResponse.ok) {
+                    const calloutsData = await calloutsResponse.json();
+                    setCallouts(calloutsData);
+                } else {
+                    console.error("Error fetching callouts:", await calloutsResponse.json());
+                }
+        
                 if (collectionsResponse.ok) {
                     const collectionsData = await collectionsResponse.json();
                     setCollections(collectionsData);

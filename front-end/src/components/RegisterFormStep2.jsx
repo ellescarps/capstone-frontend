@@ -146,58 +146,63 @@ function RegisterFormStep2({ formData, setFormData, prevStep, error, setError })
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h1>Register: Step 2/2</h1>
+        <div className="form-container">
+        <form onSubmit={handleSubmit} className="register-form">
+            <h1 className="form-title">Register: Step 2/2</h1>
 
-            <div>
-                <label htmlFor="profilePic">Profile Picture (optional):</label>
+            <div className="form-group">
+                <label htmlFor="profilePic" className="form-label">Profile Picture (optional):</label>
                 <input
                     type="file"
                     accept="image/*"
                     id="profilePic"
                     onChange={(e) => setSelectedFile(e.target.files[0])}
+                    className="form-input"
                 />
                 {selectedFile && (
                     <img
                         src={URL.createObjectURL(selectedFile)}
                         alt="Preview"
-                        style={{ width: "200px", marginTop: "10px" }}
+                        className="image-preview"
                     />
                 )}
             </div>
 
-            <div>
-                <label htmlFor="city">City:</label>
+            <div className="form-group">
+                <label htmlFor="city" className="form-label">City:</label>
                 <input
                     type="text"
                     id="city"
                     value={formData.city || ""}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     placeholder="enter city"
+                    className="form-input"
                 />
             </div>
 
-            <div>
-                <label htmlFor="country">Country:</label>
+            <div className="form-group">
+                <label htmlFor="country" className="form-label">Country:</label>
                 <input
                     type="text"
                     id="country"
                     value={formData.country || ""}
                     onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                     placeholder="enter country"
+                    className="form-input"
                 />
             </div>
 
-            <button type="button" onClick={handleUseLocation}>
+            <button type="button" onClick={handleUseLocation} className="secondary-button">
                 Use My Location
-            </button>
-
-            <div>
-                <label htmlFor="shippingOption">Shipping Option (optional):</label>
+            </button> 
+                <br /> <br />
+            <div className="form-group">
+                <label htmlFor="shippingOption" className="form-label">Shipping Option (optional):</label>
                 <select
                     id="shippingOption"
                     value={formData.shippingOption || ""}
                     onChange={(e) => setFormData({ ...formData, shippingOption: e.target.value })}
+                    className="form-select"
                 >
                     <option value="">Select an option</option>
                     {shippingOptions.map((option) => (
@@ -206,12 +211,13 @@ function RegisterFormStep2({ formData, setFormData, prevStep, error, setError })
                 </select>
             </div>
 
-            <div>
-                <label htmlFor="shippingResponsibility">Shipping Responsibility (optional):</label>
+            <div className="form-group">
+                <label htmlFor="shippingResponsibility" className="form-label">Shipping Responsibility (optional):</label>
                 <select
                     id="shippingResponsibility"
                     value={formData.shippingResponsibility || ""}
                     onChange={(e) => setFormData({ ...formData, shippingResponsibility: e.target.value })}
+                    className="form-select"
                 >
                     <option value="">Select one</option>
                     {responsibilities.map((role) => (
@@ -220,20 +226,24 @@ function RegisterFormStep2({ formData, setFormData, prevStep, error, setError })
                 </select>
             </div>
 
-            
-            <label htmlFor="terms">
+            <div className="form-group checkbox-group">
+            <label htmlFor="terms" className="form-label">
                 <input id="terms" name="terms" type="checkbox" checked={agreedToTerms} 
                 onChange={(e) => setAgreedToTerms(e.target.checked)} required />
                 I agree to the <a href="/terms" target="_blank">Terms and Privacy Policy</a>
             </label>
+            </div>
 
-
-            <button type="button" onClick={prevStep}>Back</button>
-            <button type="submit" disabled={uploading || !agreedToTerms}>
+            <div className="button-group">       
+            <button type="button" onClick={prevStep} className="secondary-button">Back</button>
+            <button type="submit" disabled={uploading || !agreedToTerms} className="submit-button">
                 {uploading ? "Uploading..." : "Complete Registration"}
             </button>
+            </div>
+
             {error && <p className="error">{error}</p>}
         </form>
+        </div>
     );
 }
 

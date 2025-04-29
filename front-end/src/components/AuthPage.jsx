@@ -7,12 +7,12 @@ function AuthPage() {
 
     return (
         <div className="auth-page">
-            <h2>{isLogin ? "Login" : "Register"}</h2>
+            <h2>{isLogin ? "LOGIN" : "REGISTER"}</h2>
 
             {isLogin ? <LoginForm /> : <Register />}
 
             <p>
-                {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+                {isLogin ? "Don't have an account, comrade?" : "Already have an account?"}{" "}
                 <button onClick={() => setIsLogin(!isLogin)}>
                     {isLogin ? "Register" : "Login"}
                 </button>

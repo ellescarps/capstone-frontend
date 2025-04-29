@@ -36,10 +36,12 @@ function RegisterFormStep1( {formData, setFormData, nextStep, error, setError}) 
     };
 
     return (
-      <form onSubmit={handleSubmit}>
-          <h1>Register: Step 1/2</h1>
-          <div>
-              <label htmlFor="name">Name:</label>
+        <div className="form-container">
+      <form onSubmit={handleSubmit} className="register-form">
+          <h1  className="form-title">Register: Step 1/2</h1>
+
+          <div className="from-group">
+              <label htmlFor="name" className="form-label">Name:</label> 
               <input
                   type="text"
                   id="name"
@@ -52,11 +54,12 @@ function RegisterFormStep1( {formData, setFormData, nextStep, error, setError}) 
                       })
                   }
                   required
+                  className="form-input"
               />
-          </div>
+          </div> <br />
 
-          <div>
-              <label htmlFor="email">Email:</label>
+          <div className="form-group">
+              <label htmlFor="email" className="form-label">Email:</label>
               <input
                   type="email"
                   id="email"
@@ -69,11 +72,12 @@ function RegisterFormStep1( {formData, setFormData, nextStep, error, setError}) 
                       })
                   }
                   required
+                  className="form-input"
               />
-          </div>
+          </div> 
 
-          <div>
-            <label htmlFor="username">Username:</label>
+          <div lassName="form-group">
+            <label htmlFor="username" className="form-label">Username:</label>
             <input 
             type="text"
             id="username"
@@ -85,12 +89,13 @@ function RegisterFormStep1( {formData, setFormData, nextStep, error, setError}) 
                     username: e.target.value,
             })}
             required
+              className="form-input"
              />
-        </div>
+        </div> <br />
 
 
-          <div>
-              <label htmlFor="password">Password:</label>
+          <div lassName="form-group">
+              <label htmlFor="password" className="form-label">Password:</label>
               <input
                   type="password"
                   id="password"
@@ -103,12 +108,14 @@ function RegisterFormStep1( {formData, setFormData, nextStep, error, setError}) 
                       })
                   }
                   required
+                  className="form-input"
               />
           </div>
 
-          <button type="submit">Next</button>
+          <button type="submit" className="submit-button">Next</button>
           {error && <p className="error">{error}</p>}
       </form>
+      </div>
   );
 }
 
