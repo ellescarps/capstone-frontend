@@ -21,7 +21,7 @@ function Account() {
         profilePicUrl: '',
     });
     
-    const { user, loading, token } = useContext(AuthContext);  
+    const { user, setUser, loading, token } = useContext(AuthContext);  
     console.log(token);
 
     useEffect(() => {
@@ -121,6 +121,8 @@ function Account() {
     
             if (response.ok) {
                 const updatedUser = await response.json();
+
+                setUser(updatedUser);
                 setShowEditModal(false);  
                 setEditForm({
                     username: updatedUser.username,  
@@ -130,8 +132,6 @@ function Account() {
                     profilePicUrl: updatedUser.profilePicUrl,
                 });
                 alert('Profile updated successfully!');
-                fetchUserPosts();
-                fetchUserCollections();
             } else {
                 const error = await response.json();
                 console.error('Error saving profile:', error);
@@ -231,7 +231,7 @@ function Account() {
             )}
 
             <section className="account-profile-header">
-                <h1>{user.username}</h1>
+                <h1 className="account-about-me">{user.username}</h1>
                 <img src={user.profilePicUrl} alt="Profile" />
                 <p>{user.city}, {user.country}</p>
                 <div className="account-about-me">
@@ -239,9 +239,9 @@ function Account() {
                     <p>{user.bio}</p>
                 </div>
                 <div className="account-profile-actions">
-                    <button>Music</button>
-                    <button>Follow</button>
-                    <button>Share</button>
+                    <button>⏯️</button>
+                    <button>👥</button>
+                    <button>↗️</button>
                 </div>
             </section>
 
@@ -258,15 +258,15 @@ function Account() {
                 <button
                     className={`account-tab ${selectedTab === 'posts' ? 'active' : ''}`}
                     onClick={() => handleTabChange('posts')}
-                >Posts</button>
+                >POSTS</button>
                 <button
                     className={`account-tab ${selectedTab === 'callouts' ? 'active' : ''}`}
                     onClick={() => handleTabChange('callouts')}
-                >Callouts</button>
+                >CALLOUTS</button>
                 <button
                     className={`account-tab ${selectedTab === 'collections' ? 'active' : ''}`}
                     onClick={() => handleTabChange('collections')}
-                >Collections</button>
+                >COLLECTIONS</button>
             </div>
 
             {selectedTab === 'posts' && (

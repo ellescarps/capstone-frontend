@@ -24,7 +24,14 @@ function PostCard({
     return (
         <div className="post-card" onClick={onClick}>
             <div className="post-image-wrapper">
-                <img src={image} alt={`Image for ${title}`} className="post-image" />
+                
+            {image && (
+            <img 
+                src={image} 
+                alt={`Image for ${title}`} 
+                className="post-image" 
+            />
+            )}
                 {isFeatured && <div className="featured-label">Featured</div>}
             </div>
 

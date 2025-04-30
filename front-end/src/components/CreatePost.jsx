@@ -94,7 +94,7 @@ function CreatePost() {
             throw new Error(data.error || data.message || `HTTP error! status: ${response.status}`);
           }
       
-          alert("Post created successfully!");
+          alert("Post/Call created successfully!");
           navigate('/');
         } catch (error) {
           console.error("Post creation error details:", error);
@@ -255,7 +255,7 @@ function CreatePost() {
 
                 <button type="button" onClick={handleUseLocation}>
                 Use My Location
-                </button>
+                </button> <br />
 
                 {error && <p className="error-message">{error}</p>} {/* Display error message */}
 

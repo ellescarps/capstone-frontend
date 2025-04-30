@@ -12,7 +12,7 @@ function AuthPage() {
             {isLogin ? <LoginForm /> : <Register />}
 
             <p>
-                {isLogin ? "Don't have an account, comrade?" : "Already have an account?"}{" "}
+                {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
                 <button onClick={() => setIsLogin(!isLogin)}>
                     {isLogin ? "Register" : "Login"}
                 </button>

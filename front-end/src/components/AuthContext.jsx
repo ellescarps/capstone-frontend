@@ -78,7 +78,7 @@ const login = async (token, userData) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, loading, login, logout }}>
+        <AuthContext.Provider value={{ user, setUser, token, loading, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

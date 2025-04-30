@@ -24,6 +24,8 @@ function App() {
   const hideNavbar =
     location.pathname === '/login' ||
     location.pathname === '/register' ||
+    location.pathname === '/search' ||
+    location.pathname === '/inbox' ||
     location.pathname.startsWith('/users/');
 
   return (

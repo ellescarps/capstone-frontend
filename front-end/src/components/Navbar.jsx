@@ -55,7 +55,7 @@ const getCategoryIcon = (name) => {
 
 
 return (
-        <header className="navbar">
+        <div className="navbar">
             <div className="navbar-container">
                 <a href="/"><h1 className="site-title">the People's Marketspace</h1></a>
             </div>     
@@ -80,7 +80,7 @@ return (
             ))}
             </div>
             
-        </header>
+        </div>
 
 );
 }

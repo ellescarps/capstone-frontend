@@ -76,7 +76,7 @@ function RegisterFormStep1( {formData, setFormData, nextStep, error, setError}) 
               />
           </div> 
 
-          <div lassName="form-group">
+          <div className="form-group">
             <label htmlFor="username" className="form-label">Username:</label>
             <input 
             type="text"
@@ -94,7 +94,7 @@ function RegisterFormStep1( {formData, setFormData, nextStep, error, setError}) 
         </div> <br />
 
 
-          <div lassName="form-group">
+          <div className="form-group">
               <label htmlFor="password" className="form-label">Password:</label>
               <input
                   type="password"
