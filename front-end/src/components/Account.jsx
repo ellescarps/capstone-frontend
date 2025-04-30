@@ -22,78 +22,102 @@ function Account() {
     });
     
     const { user, setUser, loading, token } = useContext(AuthContext);  
-    console.log(token);
+
+
+    useEffect(() => {
+        async function fetchData() {
+          const res = await fetch(`/api/users/${id}`);
+          const json = await res.json();
+          console.log(json); 
+          setPosts(json.posts || []);
+          setCallouts(json.callouts || []);
+          setCollections(json.collections || []);
+        }
+        fetchData();
+      }, [id]);
+
+
 
     useEffect(() => {
         if (!id || !token || loading) {
             console.warn("ID, token, or loading state is missing. Skipping fetch.");
             return;
         }
-
+    
+        console.log(`Fetching data for user ${id}...`); 
+    
         const controller = new AbortController();
         const signal = controller.signal;
-
+    
         const fetchUserData = async () => {
             try {
                 const [postsResponse, calloutsResponse, collectionsResponse] = await Promise.all([
-                    fetch(`${API_URL}/posts/users/${id}?type=${selectedTab}`, {
-                        method: 'GET',
+                    fetch(`${API_URL}/posts/users/${id}?type=post`, { 
                         headers: {
-                            'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`,
                         },
                         signal,
                     }),
-                    fetch(`${API_URL}/callouts/users/${id}`, {
-                        method: 'GET',
+                    fetch(`${API_URL}/posts/users/${id}?type=callout`, { 
                         headers: {
-                            'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`,
                         },
                         signal,
                     }),
                     fetch(`${API_URL}/collections/users/${id}`, {
-                        method: 'GET',
                         headers: {
-                            'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`,
                         },
                         signal,
                     }),
                 ]);
-        
+    
+              
+                console.log('Posts response:', postsResponse);
+                console.log('Callouts response:', calloutsResponse);
+                console.log('Collections response:', collectionsResponse);
+    
+           
                 if (postsResponse.ok) {
                     const postsData = await postsResponse.json();
-                    setPosts(postsData);
+                    console.log('Posts data:', postsData); 
+                    setPosts(Array.isArray(postsData.data) ? postsData.data : []);
                 } else {
-                    console.error("Error fetching posts:", await postsResponse.json());
+                    const error = await postsResponse.json();
+                    console.error("Posts fetch error:", error);
                 }
-        
+    
+             
                 if (calloutsResponse.ok) {
                     const calloutsData = await calloutsResponse.json();
-                    setCallouts(calloutsData);
+                    console.log('Callouts data:', calloutsData); 
+                    setCallouts(Array.isArray(calloutsData.data) ? calloutsData.data : []);
                 } else {
-                    console.error("Error fetching callouts:", await calloutsResponse.json());
+                    const error = await calloutsResponse.json();
+                    console.error("Callouts fetch error:", error);
                 }
-        
+    
+            
                 if (collectionsResponse.ok) {
                     const collectionsData = await collectionsResponse.json();
-                    setCollections(collectionsData);
+                    console.log('Collections data:', collectionsData); 
+                    setCollections(Array.isArray(collectionsData) ? collectionsData : []);
                 } else {
-                    console.error("Error fetching collections");
+                    const error = await collectionsResponse.json();
+                    console.error("Collections fetch error:", error);
                 }
+    
             } catch (error) {
                 if (error.name !== 'AbortError') {
-                    console.error("Error fetching user data:", error);
+                    console.error("Fetch error:", error);
                 }
             }
         };
-
+    
         fetchUserData();
         
         return () => controller.abort();
-
-    }, [id, selectedTab, token, loading]);
+    }, [id, token, loading]);
 
     const handleEditProfile = () => {
         setEditForm({
@@ -145,33 +169,41 @@ function Account() {
 
     const handleDeleteItem = async (id, type) => {
         if (window.confirm(`Are you sure you want to delete this ${type}?`)) {
-            try {
-                const response = await fetch(`${API_URL}/${type}/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
-                });
-
-                if (response.ok) {
-                    if (type === 'posts') setPosts(posts.filter(post => post.id !== id));
-                    if (type === 'callouts') setCallouts(callouts.filter(callout => callout.id !== id));
-                    if (type === 'collections') setCollections(collections.filter(collection => collection.id !== id));
-                    alert(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully.`);
-                } else {
-                    alert(`Failed to delete ${type}.`);
-                }
-            } catch (error) {
-                console.error(`Error deleting ${type}:`, error);
-                alert(`Error deleting ${type}.`);
+          try {
+            const response = await fetch(`${API_URL}/${type}/${id}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+            });
+      
+            if (response.ok) {
+              if (type === 'posts') setPosts(posts.filter(post => post.id !== id));
+              if (type === 'callouts') setCallouts(callouts.filter(callout => callout.id !== id));
+              if (type === 'collections') setCollections(collections.filter(collection => collection.id !== id));
+              alert(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully.`);
+            } else {
+              const error = await response.json();
+              console.error(`Failed to delete ${type}:`, error);
+              alert(`Failed to delete ${type}.`);
             }
+          } catch (error) {
+            console.error(`Error deleting ${type}:`, error);
+            alert(`Error deleting ${type}.`);
+          }
         }
-    };
+      };
+      
 
     const handleTabChange = (tab) => {
         setSelectedTab(tab);
     };
+
+    const handleEditPost = (postId) => {
+        history.push(`/edit-post/${postId}`);
+};
+      
 
     if (loading) {
         return <p>Loading...</p>;
@@ -270,15 +302,18 @@ function Account() {
             </div>
 
             {selectedTab === 'posts' && (
-                <section className="account-content">
+                <section className="account-content active">
                     <h2>Posts</h2>
                     <div className="account-posts-grid">
                         {posts.length ? posts.map(post => (
                             <div key={post.id} className="post-card">
                                 <PostCard post={post} />
                                 {user.id === parseInt(id) && (
-                                    <button onClick={() => handleDeleteItem(post.id, 'posts')}>Delete Post</button>
-                                )}
+                                    <div>
+                                        <button onClick={() => handleEditPost(post.id)}>Edit Post</button>
+                                        <button onClick={() => handleDeleteItem(post.id, 'posts')}>Delete Post</button>
+                                    </div>
+                                    )}
                             </div>
                         )) : <p>No posts available</p>}
                     </div>
@@ -286,14 +321,17 @@ function Account() {
             )}
 
             {selectedTab === 'callouts' && (
-                <section className="account-content">
+                <section className="account-content active">
                     <h2>Callouts</h2>
                     <div className="account-callouts-grid">
                         {callouts.length ? callouts.map(callout => (
                             <div key={callout.id} className="callout-card">
-                                <CalloutCard callout={callout} />
+                                <CalloutCard post={callout} />
                                 {user.id === parseInt(id) && (
+                                    <div>
+                                    <button onClick={() => handleEditPost(callout.id)}>Edit Post</button>
                                     <button onClick={() => handleDeleteItem(callout.id, 'callouts')}>Delete Callout</button>
+                                    </div>
                                 )}
                             </div>
                         )) : <p>No callouts available</p>}
@@ -302,14 +340,17 @@ function Account() {
             )}
 
             {selectedTab === 'collections' && (
-                <section className="account-content">
+                <section className="account-content active">
                     <h2>Collections</h2>
                     <div className="account-collections-grid">
                         {collections.length ? collections.map(collection => (
                             <div key={collection.id} className="collection-card">
                                 <CollectionCard collection={collection} />
                                 {user.id === parseInt(id) && (
+                                    <div>
+                                    <button onClick={() => handleEditPost(collection.id)}>Edit Post</button>
                                     <button onClick={() => handleDeleteItem(collection.id, 'collections')}>Delete Collection</button>
+                                    </div>
                                 )}
                             </div>
                         )) : <p>No collections available</p>}
