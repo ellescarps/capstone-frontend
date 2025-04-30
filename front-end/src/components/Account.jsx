@@ -241,9 +241,6 @@ const handleUpdateCollection = async (e) => {
     }
 };
 
-
-      
-
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -311,6 +308,7 @@ const handleUpdateCollection = async (e) => {
                 </div>
                 <div className="account-profile-actions">
                     <button>⏯️</button>
+                    <button>💌</button>
                     <button>👥</button>
                     <button>↗️</button>
                 </div>
@@ -322,6 +320,7 @@ const handleUpdateCollection = async (e) => {
                     <button onClick={() => handleTabChange('posts')}>Manage Posts</button>
                     <button onClick={() => handleTabChange('callouts')}>Manage Callouts</button>
                     <button onClick={() => handleTabChange('collections')}>Manage Collections</button>
+                    <button>Create Collection</button> 
                 </div>
             )}
 
@@ -338,26 +337,45 @@ const handleUpdateCollection = async (e) => {
                     className={`account-tab ${selectedTab === 'collections' ? 'active' : ''}`}
                     onClick={() => handleTabChange('collections')}
                 >COLLECTIONS</button>
+                
             </div>
 
             {selectedTab === 'posts' && (
                 <section className="account-content active">
                     {/* <h2>Posts</h2> */}
                     <div className="account-posts-grid">
-                        {posts.length ? posts.map(post => (
-                            <div key={post.id} className="post-card">
-                                <PostCard post={post} />
-                                {user.id === parseInt(id) && (
-                                    <div className="edit-delete-buttons">
-                                        <button onClick={() => handleEditPost(post.id)}>Edit Post</button>
-                                        <button onClick={() => handleDeleteItem(post.id, 'posts')}>Delete Post</button>
-                                    </div>
-                                    )}
-                            </div>
-                        )) : <p>No posts available</p>}
+                    {posts.length ? posts.map(post => (
+                    <div key={post.id} className="post-card">
+                        <PostCard
+                        title={post.title} 
+                        description={post.description} 
+                        image={post.image} 
+                        category={post.category?.name} 
+                        user={post.user} 
+                        city={post.location?.city} 
+                        country={post.location?.country?.name} 
+                        isAvailable={post.isAvailable} 
+                        shippingCost={post.shippingCost}
+                        shippingResponsibility={post.shippingResponsibility}
+                        shippingOption={post.shippingOption}
+                        isFeatured={post.isFeatured}
+                        trendingScore={post.trendingScore}
+                        createdAt={post.createdAt}
+                        likesCount={post._count?.likes}
+                        commentsCount={post._count?.comments}
+                        favoritesCount={post._count?.favorites}
+                        />
+                        {user.id === parseInt(id) && (
+                        <div className="edit-delete-buttons">
+                            <button onClick={() => handleEditPost(post.id)}>Edit Post</button>
+                            <button onClick={() => handleDeleteItem(post.id, 'posts')}>Delete Post</button>
+                        </div>
+                        )}
                     </div>
-                </section>
-            )}
+                    )) : <p>No posts available</p>}
+                                        </div>
+                                    </section>
+                                )}
 
             {selectedTab === 'callouts' && (
                 <section className="account-content active">
