@@ -15,10 +15,11 @@ import CreatePost from './components/CreatePost';
 import Inbox from './components/Inbox';
 import ProtectedRoute from './components/ProtectedRoute';
 import SearchPage from './components/SearchPage';
+import SingleCallout from './components/SingleCallout';
 
 
 function App() {
-  const [search, setSearch] = useState("");  // Lifting state up
+  const [search, setSearch] = useState("");  
   const location = useLocation();
 
   const hideNavbar =
@@ -37,11 +38,12 @@ function App() {
         <Route path="/posts" element={<PostPage search={search} />} />
         <Route path="/callouts" element={<CalloutPage search={search} />} />
         <Route path="/posts/:id" element={<SinglePost search={search} />} />
+        <Route path="/callouts/:id" element={<SingleCallout search={search} />} />
         <Route path="/categories/:categoryName" element={<CategoryPage search={search} />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/register" element={<AuthPage />} /> 
         <Route path="/account/:id" element={<Account />} />
-        <Route path="/:username" element={<UserProfile />} />
+        <Route path="/users/:username" element={<UserProfile />} />
         <Route path="/postcall" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
         <Route path="/inbox" element={<ProtectedRoute><Inbox /></ProtectedRoute>} />   
         <Route path="/search" element={<SearchPage />} /> 

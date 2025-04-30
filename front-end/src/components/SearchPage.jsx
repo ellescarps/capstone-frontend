@@ -107,20 +107,21 @@ function SearchPage() {
           results.users.length > 0 ? (
             results.users.map(user => (
               <Link 
-                to={`/${user.username}`} 
-                key={user.id} 
-                className="result-card user-card"
-              >
-                <img 
-                  src={user.profilePicUrl || '/default-avatar.png'} 
-                  alt={user.username}
-                  className="user-avatar"
-                />
-                <div className="user-info">
-                  <h4>{user.username}</h4>
-                  <p className="bio">{user.bio || 'No bio yet'}</p>
-                </div>
-              </Link>
+              to={`/users/${user?.username}`}
+              key={user.id} 
+              className="result-card user-card"
+            >
+              <img 
+                src={user.profilePicUrl || '/default-avatar.png'} 
+                alt={user.username}
+                className="user-avatar"
+              />
+              <div className="user-info">
+                <h4>@{user.username}</h4>
+                <p className="bio">{user.bio || 'No bio yet'}</p>
+              </div>
+            </Link>
+            
             ))
           ) : (
             <div className="no-results">

@@ -2,9 +2,9 @@ import React from "react";
 
 function CollectionCard({ collection }) {
   return (
+    <div className="collection-container">
     <div className="collection-card">
       <h3>{collection.name}</h3>
-      <p>{collection.description || "No description available"}</p>
       
    
       <div className="collection-items">
@@ -18,6 +18,7 @@ function CollectionCard({ collection }) {
           <p>No items in this collection</p>
         )}
       </div>
+    </div>
     </div>
   );
 }

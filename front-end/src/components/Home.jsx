@@ -140,6 +140,7 @@ function HomePage({ search }) {
                       key={callout?.id}
                       post={callout || {}}
                       user={callout?.user || {}} 
+                      onClick={() => navigate(`/callouts/${callout?.id}`)}
                     />
                   ))}
                   {filteredCallouts?.length === 0 && (

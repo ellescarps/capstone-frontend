@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import PostCard from "./PostCard";
 import CalloutCard from "./CalloutCard";
 import CollectionCard from "./CollectionCard";
@@ -20,6 +20,9 @@ function Account() {
         bio: '',
         profilePicUrl: '',
     });
+    const [editingCollectionId, setEditingCollectionId] = useState(null);
+    const [newCollectionName, setNewCollectionName] = useState('');
+    const navigate = useNavigate();
     
     const { user, setUser, loading, token } = useContext(AuthContext);  
 
@@ -201,8 +204,44 @@ function Account() {
     };
 
     const handleEditPost = (postId) => {
-        history.push(`/edit-post/${postId}`);
+        navigate(`/edit-post/${postId}`);
 };
+
+const handleStartEdit = (collection) => {
+    setEditingCollectionId(collection.id);
+    setNewCollectionName(collection.name); 
+};
+
+
+const handleUpdateCollection = async (e) => {
+    e.preventDefault();
+
+    try {
+        const res = await fetch(`/api/collections/${editingCollectionId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: newCollectionName }),
+        });
+
+        if (res.ok) {
+            setCollections(prevCollections => 
+                prevCollections.map(collection => 
+                    collection.id === editingCollectionId ? 
+                    { ...collection, name: newCollectionName } : 
+                    collection
+                )
+            );
+            setEditingCollectionId(null);
+            setNewCollectionName('');
+        } else {
+            console.error('Update failed');
+        }
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
       
 
     if (loading) {
@@ -303,13 +342,13 @@ function Account() {
 
             {selectedTab === 'posts' && (
                 <section className="account-content active">
-                    <h2>Posts</h2>
+                    {/* <h2>Posts</h2> */}
                     <div className="account-posts-grid">
                         {posts.length ? posts.map(post => (
                             <div key={post.id} className="post-card">
                                 <PostCard post={post} />
                                 {user.id === parseInt(id) && (
-                                    <div>
+                                    <div className="edit-delete-buttons">
                                         <button onClick={() => handleEditPost(post.id)}>Edit Post</button>
                                         <button onClick={() => handleDeleteItem(post.id, 'posts')}>Delete Post</button>
                                     </div>
@@ -322,13 +361,13 @@ function Account() {
 
             {selectedTab === 'callouts' && (
                 <section className="account-content active">
-                    <h2>Callouts</h2>
+                    {/* <h2>Callouts</h2> */}
                     <div className="account-callouts-grid">
                         {callouts.length ? callouts.map(callout => (
                             <div key={callout.id} className="callout-card">
                                 <CalloutCard post={callout} />
                                 {user.id === parseInt(id) && (
-                                    <div>
+                                    <div className="edit-delete-buttons">
                                     <button onClick={() => handleEditPost(callout.id)}>Edit Post</button>
                                     <button onClick={() => handleDeleteItem(callout.id, 'callouts')}>Delete Callout</button>
                                     </div>
@@ -339,24 +378,41 @@ function Account() {
                 </section>
             )}
 
-            {selectedTab === 'collections' && (
-                <section className="account-content active">
-                    <h2>Collections</h2>
-                    <div className="account-collections-grid">
-                        {collections.length ? collections.map(collection => (
-                            <div key={collection.id} className="collection-card">
-                                <CollectionCard collection={collection} />
-                                {user.id === parseInt(id) && (
-                                    <div>
-                                    <button onClick={() => handleEditPost(collection.id)}>Edit Post</button>
-                                    <button onClick={() => handleDeleteItem(collection.id, 'collections')}>Delete Collection</button>
-                                    </div>
-                                )}
-                            </div>
-                        )) : <p>No collections available</p>}
-                    </div>
-                </section>
-            )}
+            
+
+{selectedTab === 'collections' && (
+    <section className="account-content active">
+        <div className="account-collections-grid">
+            {collections.length ? collections.map(collection => (
+                <div key={collection.id} className="collection-card">
+                    <CollectionCard collection={collection} />
+                    {user.id === parseInt(id) && (
+                        <div className="edit-delete-buttons">
+                            {editingCollectionId === collection.id ? (
+                                <form onSubmit={handleUpdateCollection} className="edit-collection-form">
+                                    <input
+                                        type="text"
+                                        value={newCollectionName}
+                                        onChange={(e) => setNewCollectionName(e.target.value)}
+                                        required
+                                    />
+                                    <button type="submit">Save</button>
+                                    <button type="button" onClick={() => setEditingCollectionId(null)}>Cancel</button>
+                                </form>
+                            ) : (
+                                <>
+                                    <button onClick={() => handleStartEdit(collection)}>Edit</button>
+                                    <button onClick={() => handleDeleteItem(collection.id, 'collections')}>Delete</button>
+                                </>
+                            )}
+                        </div>
+                    )}
+                </div>
+            )) : <p>No collections available</p>}
+        </div>
+    </section>
+)}
+
         </div>
     );
 }

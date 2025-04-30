@@ -114,6 +114,7 @@ function CategoryPage({ search }) {
                                 <CalloutCard
                                     key={callout?.id}
                                     post={callout || {}}
+                                    onClick={() => navigate(`/callouts/${callout?.id}`)}
                                 />
                             ))
                         ) : (

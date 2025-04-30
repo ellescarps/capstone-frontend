@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const defaultAvatar = 'https://via.placeholder.com/150';
 
 function UserProfile() {
-  const { id } = useParams();
-  const navigate = useNavigate(); 
+  const { username } = useParams(); 
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [callouts, setCallouts] = useState(null);
@@ -17,17 +16,8 @@ function UserProfile() {
   const [loadingCollections, setLoadingCollections] = useState(true);
   const [userNotFound, setUserNotFound] = useState(false);
 
-
   const token = localStorage.getItem('authToken'); 
-  const isLoggedIn = token !== null;
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate('/login');
-      return;
-    }
-  }, [isLoggedIn, navigate]);
-
+  
 
   useEffect(() => {
     setUser(null);
@@ -40,13 +30,12 @@ function UserProfile() {
     setLoadingPosts(true);
     setLoadingCollections(true);
     setLoadingCallouts(false);
-  }, [id]);
+  }, [username]);
 
-  
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch(`/api/users/${id}`, {
+        const res = await fetch(`/api/users/username/${username}`, {
           headers: {
             'Authorization': `Bearer ${token}` 
           }
@@ -67,46 +56,37 @@ function UserProfile() {
     };
 
     fetchUser();
-  }, [id, token]);
-
+  }, [username, token]);
 
   useEffect(() => {
-    if (userNotFound) return;
+    if (userNotFound || !user) return;
     const fetchPosts = async () => {
       try {
         setLoadingPosts(true);
-        const res = await fetch(`/api/posts/users/${id}?type=post`, {
+        const res = await fetch(`/api/posts/users/${user.id}?type=post`, {
           headers: {
             'Authorization': `Bearer ${token}` 
           }
         });
         if (!res.ok) throw new Error('Failed to fetch posts');
-        const text = await res.text(); 
-        console.log(text); 
-  
-
-        const data = JSON.parse(text);
-        console.log(data); 
+        const data = await res.json();
         setPosts(data);
       } catch (err) {
-        if (err.name !== 'AbortError') {
-          console.error(err);
-        }
+        console.error(err);
       } finally {
         setLoadingPosts(false);
       }
     };
 
     fetchPosts();
-  }, [id, userNotFound, token]);
-
+  }, [userNotFound, user, token]);
 
   useEffect(() => {
-    if (userNotFound) return;
+    if (userNotFound || !user) return;
     const fetchCollections = async () => {
       try {
         setLoadingCollections(true);
-        const res = await fetch(`/api/collections/users/${id}`, {
+        const res = await fetch(`/api/collections/users/${user.id}`, {
           headers: {
             'Authorization': `Bearer ${token}` 
           }
@@ -115,26 +95,23 @@ function UserProfile() {
         const data = await res.json();
         setCollections(data);
       } catch (err) {
-        if (err.name !== 'AbortError') {
-          console.error(err);
-        }
+        console.error(err);
       } finally {
         setLoadingCollections(false);
       }
     };
 
     fetchCollections();
-  }, [id, userNotFound, token]);
-
+  }, [userNotFound, user, token]);
 
   useEffect(() => {
-    if (activeTab !== 'callouts' || userNotFound) return;
-    if (callouts !== null) return; 
+    if (activeTab !== 'callouts' || userNotFound || !user) return;
+    if (callouts !== null) return;
 
     const fetchCallouts = async () => {
       try {
         setLoadingCallouts(true);
-        const res = await fetch(`/api/posts/users/${id}?type=callout`, {
+        const res = await fetch(`/api/posts/users/${user.id}?type=callout`, {
           headers: {
             'Authorization': `Bearer ${token}` 
           }
@@ -143,24 +120,17 @@ function UserProfile() {
         const data = await res.json();
         setCallouts(data);
       } catch (err) {
-        if (err.name !== 'AbortError') {
-          console.error(err);
-        }
+        console.error(err);
       } finally {
         setLoadingCallouts(false);
       }
     };
 
     fetchCallouts();
-  }, [id, activeTab, userNotFound, token]);
+  }, [activeTab, userNotFound, user, token, callouts]);
 
-
-  if (loadingUser) {
-    return <div>Loading user...</div>;
-  }
-  if (userNotFound || !user) {
-    return <div>User not found</div>;
-  }
+  if (loadingUser) return <div>Loading user...</div>;
+  if (userNotFound || !user) return <div>User not found</div>;
 
   const renderPosts = () => {
     if (loadingPosts) return <div>Loading posts...</div>;

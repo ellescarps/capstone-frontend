@@ -208,12 +208,15 @@ body {
 }
 
 
+
+
 /* styling home page post and callout cards */
 .posts-grid, .callouts-grid {
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     padding: 20px;
+  
 }
 
 .post-card, .callout-card {
@@ -224,6 +227,7 @@ body {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
+ 
   }
 
 .post-card:hover, .callout-card:hover {
@@ -506,6 +510,7 @@ body {
   max-width: 800px;
   width: 100%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 200px;
 }
 
 
@@ -819,13 +824,25 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 15px;
+  margin-bottom: 100px;
 }
 
 .account-posts-grid p, .account-callouts-grid p, .account-collections-grid p {
   text-align: center;
   font-size: 1.2rem;
   color: #777;
+  height: 200px;
+  width: 200px;
+  padding: 10px;
+  margin: 10px;
 }
+
+.edit-delete-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
 
 
 .account-post-card {
@@ -2065,6 +2082,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 15px;
+  margin-bottom: 100px;
 }
 
 .account-posts-grid p, .account-callouts-grid p, .account-collections-grid p {
@@ -2072,6 +2090,13 @@ body {
   font-size: 1.2rem;
   color: #777;
 }
+
+.edit-delete-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
 
 
 .account-post-card {
@@ -2474,7 +2499,68 @@ body {
 .checkbox-group input[type="checkbox"] {
   margin-right: 0.5rem;
 }
+
+.collection-card {
+  background-color: #ffffff;
+  border: 5px solid #a09ea3;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 50px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
 }
+
+.collection-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.collection-card h3 {
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.collection-card p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.collection-items {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.collection-item {
+  padding: 8px 12px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+singlecallout-container {
+  margin: 130px;
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* phones */
 @media screen and (max-width: 430px) {
@@ -2613,5 +2699,4 @@ body {
   .rating-count {
     font-size: 10px;
   }
-
 }
